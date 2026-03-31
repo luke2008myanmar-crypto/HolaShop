@@ -78,7 +78,7 @@
 
         .feature-bar {
             display: grid;
-            grid-template-cols: repeat(4, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 8px;
             margin-bottom: 24px;
         }
@@ -121,6 +121,16 @@
             background: rgba(255,107,0,0.05);
             outline: none;
         }
+
+        /* Logo Placeholder Fallback */
+        .logo-placeholder {
+            background: linear-gradient(45deg, #111, #222);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff6b00;
+            font-weight: 900;
+        }
     </style>
 </head>
 <body>
@@ -149,8 +159,9 @@
 
     <!-- Welcome Screen -->
     <div id="welcome" class="welcome-screen">
-        <div class="w-24 h-24 mb-6 rounded-3xl overflow-hidden border-2 border-orange-500 shadow-[0_0_30px_rgba(255,107,0,0.3)] bg-zinc-900">
-            <img src="https://cdn.discordapp.com/attachments/1183103131749138432/1345653556552405023/Logo.jpg" alt="HolaShop Logo" class="w-full h-full object-cover">
+        <div class="w-24 h-24 mb-6 rounded-3xl overflow-hidden border-2 border-orange-500 shadow-[0_0_30px_rgba(255,107,0,0.3)] bg-zinc-900 logo-placeholder">
+            <img src="Logo.jpg" alt="HolaShop Logo" class="w-full h-full object-cover" onerror="this.style.display='none'">
+            <span class="absolute text-xl">HS</span>
         </div>
         <h1 class="text-4xl font-black italic uppercase tracking-tighter mb-2">HOLA<span class="text-orange-500">SHOP</span></h1>
         <p class="text-[10px] font-bold text-gray-500 tracking-[0.4em] uppercase mb-10">Premium Robux Experience</p>
@@ -162,8 +173,9 @@
     <!-- Navigation -->
     <nav class="max-w-6xl mx-auto p-6 flex justify-between items-center">
         <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/10">
-                <img src="https://cdn.discordapp.com/attachments/1183103131749138432/1345653556552405023/Logo.jpg" class="w-full h-full object-cover">
+            <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/10 bg-zinc-900 logo-placeholder relative">
+                <img src="Logo.jpg" class="w-full h-full object-cover relative z-10" onerror="this.style.display='none'">
+                <span class="absolute inset-0 flex items-center justify-center text-[10px] font-black">HS</span>
             </div>
             <div>
                 <div class="text-lg font-black italic tracking-tighter uppercase">HOLA<span class="text-orange-500">SHOP</span></div>
@@ -180,7 +192,7 @@
     <main class="max-w-6xl mx-auto px-6 py-4 grid grid-cols-1 lg:grid-cols-12 gap-8">
         <!-- Left Sidebar -->
         <div class="lg:col-span-4 space-y-6">
-            <!-- Features (Restored from Screenshot) -->
+            <!-- Features -->
             <div class="feature-bar">
                 <div class="feature-item">
                     <div class="feature-icon-box"><svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001z"/></svg></div>
@@ -283,7 +295,7 @@
                         </div>
                     </div>
 
-                    <!-- Small Preview with Scale Trigger -->
+                    <!-- Small Preview -->
                     <div id="previewContainer" class="hidden animate-fade">
                         <div class="relative group cursor-pointer w-48 mx-auto" onclick="openPreview()">
                             <div class="aspect-square rounded-2xl overflow-hidden border-2 border-white/10 group-hover:border-orange-500 transition-all">
@@ -325,7 +337,7 @@
                 '.tr-l-user': "Roblox အမည်",
                 '.tr-l-amt': "Robux ပမာဏ",
                 '.tr-l-note': "မှတ်ချက် (Optional)",
-                '.tr-total': "ကျသင့်ငွေ",
+                '.tr-total': "ကျသင့်ငွေ",
                 '.tr-l-pay': "ငွေပေးချေမှုပုံစံ",
                 '.tr-l-slip': "ငွေလွှဲလက်မှတ်",
                 '.tr-upload': "ဓာတ်ပုံတင်ရန်",
@@ -449,13 +461,23 @@
             try {
                 const res = await fetch(WH_URL, { method: 'POST', body: fd });
                 if (res.ok) {
-                    alert("Order Submitted Successfully!");
+                    // Custom message instead of alert
+                    const successMsg = document.createElement('div');
+                    successMsg.className = "fixed top-10 left-1/2 -translate-x-1/2 bg-green-500 px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] z-[10001] shadow-2xl animate-bounce";
+                    successMsg.innerText = "Order Submitted Successfully!";
+                    document.body.appendChild(successMsg);
+                    setTimeout(() => successMsg.remove(), 4000);
+                    
                     e.target.reset();
                     resetFile();
                     calc();
                 } else throw Error();
             } catch (err) {
-                alert("Submission failed. Please check connection.");
+                 const errorMsg = document.createElement('div');
+                 errorMsg.className = "fixed top-10 left-1/2 -translate-x-1/2 bg-red-500 px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] z-[10001] shadow-2xl";
+                 errorMsg.innerText = "Submission failed. Check connection.";
+                 document.body.appendChild(errorMsg);
+                 setTimeout(() => errorMsg.remove(), 4000);
             } finally {
                 btn.disabled = false;
                 btn.innerText = "Submit Order";

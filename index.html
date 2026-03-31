@@ -3,276 +3,287 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HolaShop - Premium Robux Store</title>
-    <!-- Favicon / Website Icon -->
+    <title>HolaShop | Premium Robux Provider</title>
+    
     <link rel="icon" type="image/jpeg" href="Logo.jpg">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Pyidaungsu:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pyidaungsu:wght@400;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --brand-orange: #ff6b00;
-            --brand-glow: rgba(255, 107, 0, 0.5);
+            --accent: #ff6b00;
+            --accent-hover: #e65a00;
+            --bg-dark: #0a0a0a;
+            --surface: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
         }
-        
+
         body {
-            font-family: 'Plus Jakarta Sans', 'Pyidaungsu', sans-serif;
-            background-color: #050505;
-            color: #ffffff;
-            overflow-x: hidden;
+            font-family: 'Inter', 'Pyidaungsu', sans-serif;
+            background-color: var(--bg-dark);
+            color: #f5f5f5;
+            -webkit-font-smoothing: antialiased;
         }
 
-        #welcome-screen {
-            position: fixed;
-            inset: 0;
-            z-index: 1000;
-            background: #050505;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.8s cubic-bezier(0.87, 0, 0.13, 1);
+        .glass {
+            background: rgba(15, 15, 15, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
         }
 
-        .welcome-bg {
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at center, rgba(255, 107, 0, 0.15) 0%, transparent 70%);
-            z-index: -1;
-        }
-
-        .hero-bg {
+        .hero-gradient {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: linear-gradient(to bottom, rgba(5,5,5,0.7), rgba(5,5,5,1)), 
-                        url('Gemini_Generated_Image_hdvtdkhdvtdkhdvt (1) (1).png');
-            background-size: cover;
-            background-position: center;
-            filter: saturate(1.1);
+            background: 
+                radial-gradient(circle at 0% 0%, rgba(255, 107, 0, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(255, 107, 0, 0.03) 0%, transparent 50%),
+                linear-gradient(to bottom, rgba(10, 10, 10, 0.8), #0a0a0a);
         }
 
-        .glass-panel {
-            background: rgba(10, 10, 10, 0.7);
-            backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.8);
+        .form-input {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .btn-brand {
-            background: linear-gradient(90deg, #ff8c00, #ff4500);
-            box-shadow: 0 15px 30px -10px var(--brand-glow);
-            transition: all 0.3s ease;
-        }
-
-        .btn-brand:hover {
-            box-shadow: 0 20px 40px -5px var(--brand-glow);
-            filter: brightness(1.1);
-        }
-
-        .input-field {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: 0.3s;
-        }
-
-        .input-field:focus {
-            border-color: var(--brand-orange);
-            background: rgba(255, 255, 255, 0.07);
+        .form-input:focus {
+            border-color: var(--accent);
+            background: rgba(255, 107, 0, 0.02);
+            box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.1);
             outline: none;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+        .btn-primary {
+            background: var(--accent);
+            transition: all 0.2s;
+            font-weight: 600;
         }
 
-        .floating { animation: float 6s ease-in-out infinite; }
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0px);
+        }
+
+        .sidebar-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 1.25rem;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade { animation: fadeIn 0.5s ease-out forwards; }
     </style>
 </head>
-<body class="min-h-screen">
-    <!-- Welcome Page -->
-    <div id="welcome-screen">
-        <div class="welcome-bg"></div>
-        <img src="Logo.jpg" alt="Logo" class="w-32 h-32 rounded-3xl shadow-2xl mb-8 floating border border-white/10">
-        <h1 class="text-4xl font-black italic tracking-tighter uppercase mb-2">HOLA<span class="text-orange-500">SHOP</span></h1>
-        <p class="text-gray-500 font-bold tracking-[0.4em] uppercase text-[10px] mb-12 t-welcome-sub">မြန်မာနိုင်ငံ၏ အကောင်းဆုံး Robux အရောင်းဆိုင်</p>
-        <button onclick="enterShop()" class="btn-brand px-12 py-4 rounded-2xl font-black uppercase tracking-widest text-xs t-enter">
-            ဆိုင်ထဲသို့ဝင်ရန်
-        </button>
-    </div>
+<body class="min-h-screen selection:bg-orange-500/30">
 
-    <div class="hero-bg"></div>
+    <div class="hero-gradient"></div>
 
-    <main class="max-w-6xl mx-auto px-6 py-12">
-        <header class="flex justify-between items-center mb-16">
-            <div class="flex items-center gap-4">
-                <img src="Logo.jpg" alt="Logo" class="w-12 h-12 rounded-xl shadow-lg rotate-2">
-                <div>
-                    <h1 class="text-xl font-black italic tracking-tighter uppercase leading-none">HOLA<span class="text-orange-500">SHOP</span></h1>
-                    <p class="text-[9px] text-gray-500 font-bold tracking-[0.3em] uppercase t-premium">Premium ဝန်ဆောင်မှု</p>
-                </div>
+    <nav class="max-w-7xl mx-auto px-6 py-8 flex justify-between items-center relative z-50">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg overflow-hidden border border-white/10">
+                <img src="Logo.jpg" alt="Logo" class="w-full h-full object-cover">
             </div>
-            <div class="flex items-center gap-6">
-                <select id="langSwitcher" onchange="switchLanguage(this.value)" class="bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-[10px] font-black outline-none cursor-pointer">
-                    <option value="my" class="bg-zinc-900">🇲🇲 MYANMAR</option>
-                    <option value="en" class="bg-zinc-900">🇺🇸 ENGLISH</option>
-                </select>
+            <div>
+                <span class="text-lg font-bold tracking-tight">HOLA<span class="text-orange-500">SHOP</span></span>
+                <p class="text-[10px] text-gray-500 font-medium uppercase tracking-wider t-premium">Premium Services</p>
             </div>
-        </header>
+        </div>
+        
+        <div class="flex items-center gap-4">
+            <select id="langSwitcher" onchange="switchLanguage(this.value)" class="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-xs font-semibold focus:outline-none cursor-pointer">
+                <option value="my">🇲🇲 Myanmar</option>
+                <option value="en">🇺🇸 English</option>
+            </select>
+        </div>
+    </nav>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
-            <!-- Sidebar -->
-            <div class="lg:col-span-4 space-y-8">
-                <div class="glass-panel p-8 rounded-[2.5rem] relative overflow-hidden">
-                    <h3 class="text-[10px] font-black text-orange-500 uppercase tracking-[0.3em] mb-4 t-official-group">တရားဝင် Group များ</h3>
-                    <h2 class="text-2xl font-black mb-3 leading-tight t-join-title">Community သို့ဝင်ရန်</h2>
-                    <p class="text-gray-400 text-xs leading-relaxed mb-6 t-join-desc">Group Join စနစ်ဖြင့် ဝယ်ယူရန် ၁၄ ရက်ပြည့်ရပါမည်။</p>
-                    <div class="space-y-3">
-                        <a href="https://www.roblox.com/communities/787559488/Golden-Myanmar#!/about" target="_blank" class="block w-full py-4 text-center bg-white/5 border border-white/10 rounded-2xl text-[10px] font-black tracking-widest hover:bg-orange-600 hover:text-white transition-all uppercase">Group 1 သို့သွားရန်</a>
-                        <a href="https://www.roblox.com/communities/1031541384/Ti-Htwin#!/about" target="_blank" class="block w-full py-4 text-center bg-white/5 border border-white/10 rounded-2xl text-[10px] font-black tracking-widest hover:bg-orange-600 hover:text-white transition-all uppercase">Group 2 သို့သွားရန်</a>
+    <main class="max-w-7xl mx-auto px-6 pb-20 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <aside class="lg:col-span-4 space-y-6">
+            
+            <section class="sidebar-card p-6">
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-1 h-4 bg-orange-500 rounded-full"></div>
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 t-official-group">Official Communities</h3>
+                </div>
+                <p class="text-sm text-gray-500 mb-6 t-join-desc">Please join our groups. 14 days group age required for instant payouts.</p>
+                <div class="space-y-3">
+                    <a href="https://www.roblox.com/communities/787559488" target="_blank" class="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/5 hover:border-orange-500/50 transition-colors group">
+                        <span class="text-xs font-semibold">Golden Myanmar</span>
+                        <svg class="w-4 h-4 text-gray-600 group-hover:text-orange-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </a>
+                    <a href="https://www.roblox.com/communities/1031541384" target="_blank" class="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/5 hover:border-orange-500/50 transition-colors group">
+                        <span class="text-xs font-semibold">Ti Htwin Community</span>
+                        <svg class="w-4 h-4 text-gray-600 group-hover:text-orange-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </a>
+                </div>
+            </section>
+
+            <section class="sidebar-card p-6">
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-1 h-4 bg-orange-500 rounded-full"></div>
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-gray-400 t-pay-details">Payment Gateways</h3>
+                </div>
+                <div class="space-y-4">
+                    <div class="p-4 bg-blue-500/5 border border-blue-500/10 rounded-xl">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-[10px] font-bold text-blue-400">KBZ PAY</span>
+                            <span class="text-[10px] text-gray-500">Ei Ei Theint</span>
+                        </div>
+                        <p class="text-sm font-mono font-bold tracking-wider">09956799403</p>
+                    </div>
+                    <div class="p-4 bg-yellow-500/5 border border-yellow-500/10 rounded-xl">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-[10px] font-bold text-yellow-400">WAVE PAY</span>
+                            <span class="text-[10px] text-gray-500">Ei Ei Theint</span>
+                        </div>
+                        <p class="text-sm font-mono font-bold tracking-wider">09956799403</p>
+                    </div>
+                </div>
+            </section>
+        </aside>
+
+        <div class="lg:col-span-8">
+            <div class="glass rounded-3xl p-8 md:p-10 shadow-2xl relative overflow-hidden animate-fade">
+                
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 pb-8 border-b border-white/5">
+                    <div>
+                        <h2 class="text-2xl font-extrabold tracking-tight t-order-now">Complete Your Order</h2>
+                        <p class="text-sm text-gray-500 mt-1">Select your preferred delivery method below.</p>
+                    </div>
+                    <div class="inline-flex p-1 bg-white/5 rounded-xl border border-white/10">
+                        <button onclick="setMethod('group', 35)" id="m-group" class="px-6 py-2 rounded-lg text-xs font-bold transition-all bg-orange-500 text-white t-m-group">Group Join</button>
+                        <button onclick="setMethod('gamepass', 32)" id="m-gamepass" class="px-6 py-2 rounded-lg text-xs font-bold transition-all text-gray-400 hover:text-white t-m-pass">Gamepass</button>
                     </div>
                 </div>
 
-                <div class="glass-panel p-8 rounded-[2.5rem]">
-                    <h3 class="text-[10px] font-black text-orange-500 uppercase tracking-[0.3em] mb-6 t-pay-details">ငွေပေးချေရန် အကောင့်များ</h3>
-                    <div class="space-y-4">
-                        <div class="p-4 bg-white/5 rounded-2xl border border-white/5">
-                            <span class="block text-[9px] font-black text-blue-400 uppercase mb-1">KBZ Pay (KPay)</span>
-                            <p class="text-sm font-bold tracking-wider mb-1">09956799403</p>
-                            <p class="text-[10px] text-gray-500 font-bold uppercase">Ei Ei Theint</p>
+                <div id="methodInfo" class="mb-10 p-5 bg-orange-500/5 border border-orange-500/10 rounded-2xl">
+                    <div class="flex gap-4">
+                        <div class="mt-0.5 text-orange-500">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         </div>
-                        <div class="p-4 bg-white/5 rounded-2xl border border-white/5">
-                            <span class="block text-[9px] font-black text-yellow-500 uppercase mb-1">Wave Pay</span>
-                            <p class="text-sm font-bold tracking-wider mb-1">09956799403</p>
-                            <p class="text-[10px] text-gray-500 font-bold uppercase">Ei Ei Theint</p>
-                        </div>
+                        <div id="methodExplanation" class="text-xs leading-relaxed text-gray-300"></div>
+                    </div>
+                    
+                    <div id="tutorialSection" class="hidden mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-white/5 pt-6">
+                        <a href="https://youtu.be/baVhMaKcBYI" target="_blank" class="flex items-center gap-3 p-3 bg-white/5 rounded-xl border border-white/5 hover:bg-white/10 transition-colors">
+                            <div class="w-8 h-8 flex items-center justify-center bg-red-600 rounded-lg">
+                                <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-bold t-video-1">Gamepass Tutorial</p>
+                                <p class="text-[9px] text-gray-500 t-video-1-sub">Step 1: Setup</p>
+                            </div>
+                        </a>
+                        <a href="https://youtube.com/shorts/monL5fkneR8" target="_blank" class="flex items-center gap-3 p-3 bg-white/5 rounded-xl border border-white/5 hover:bg-white/10 transition-colors">
+                            <div class="w-8 h-8 flex items-center justify-center bg-red-600 rounded-lg">
+                                <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-bold t-video-2">Second Step</p>
+                                <p class="text-[9px] text-gray-500 t-video-2-sub">Step 2: Finishing</p>
+                            </div>
+                        </a>
                     </div>
                 </div>
-            </div>
 
-            <!-- Main Order Form -->
-            <div class="lg:col-span-8">
-                <div class="glass-panel p-8 md:p-12 rounded-[3.5rem] relative">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
-                        <div>
-                            <h2 class="text-4xl font-black tracking-tighter italic uppercase t-order-now">မှာယူ <span class="text-orange-500">ရန်</span></h2>
+                <form id="orderForm" class="space-y-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest t-l-user">Roblox Username</label>
+                            <input type="text" id="username" required placeholder="Your Username" class="form-input w-full px-5 py-4 rounded-xl font-medium">
                         </div>
-                        <div class="flex bg-white/5 p-1.5 rounded-2xl border border-white/5">
-                            <button onclick="setMethod('group', 35)" id="m-group" class="px-6 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all bg-orange-600 text-white t-m-group">Group Join</button>
-                            <button onclick="setMethod('gamepass', 32)" id="m-gamepass" class="px-6 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all text-gray-400 t-m-pass">Gamepass</button>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest t-l-amt">Robux Amount</label>
+                            <input type="number" id="amount" required placeholder="Min 100" class="form-input w-full px-5 py-4 rounded-xl font-medium">
                         </div>
                     </div>
 
-                    <!-- Dynamic Method Explanation & Tutorials -->
-                    <div id="methodContainer" class="mb-10 space-y-4">
-                        <div id="methodExplanation" class="p-6 rounded-3xl border border-white/5 bg-white/5 text-[11px] leading-relaxed">
-                            <!-- Text injected by JS -->
-                        </div>
-                        
-                        <!-- Tutorial Videos Section (Only for Gamepass) -->
-                        <div id="tutorialSection" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <a href="https://youtu.be/baVhMaKcBYI?si=Rs9PU4Tw2svSp-DT" target="_blank" class="flex items-center gap-4 p-4 bg-red-600/10 border border-red-500/20 rounded-2xl hover:bg-red-600/20 transition-all group">
-                                <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center text-white">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                                </div>
-                                <div>
-                                    <p class="text-[10px] font-black uppercase tracking-widest t-video-1">Gamepass Tutorial</p>
-                                    <p class="text-[9px] text-gray-400 t-video-1-sub">အဆင့် ၁ - ပြုလုပ်ပုံ</p>
-                                </div>
-                            </a>
-                            <a href="https://youtube.com/shorts/monL5fkneR8?si=XJKfJK3Qmun2O22F" target="_blank" class="flex items-center gap-4 p-4 bg-red-600/10 border border-red-500/20 rounded-2xl hover:bg-red-600/20 transition-all group">
-                                <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center text-white">
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                                </div>
-                                <div>
-                                    <p class="text-[10px] font-black uppercase tracking-widest t-video-2">Second Step</p>
-                                    <p class="text-[9px] text-gray-400 t-video-2-sub">အဆင့် ၂ - အပြီးသတ်ပုံ</p>
-                                </div>
-                            </a>
+                    <div class="p-8 bg-white/5 rounded-2xl border border-white/5 text-center">
+                        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] t-total-price">Estimated Total</span>
+                        <div class="mt-2 flex items-baseline justify-center gap-2">
+                            <span id="totalDisplay" class="text-4xl font-extrabold text-white">0</span>
+                            <span class="text-sm font-bold text-gray-500">MMK</span>
                         </div>
                     </div>
 
-                    <form id="orderForm" class="space-y-8">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <div class="space-y-3">
-                                <label class="text-[9px] font-black text-gray-500 uppercase tracking-[0.3em] ml-2 t-l-user">Roblox အမည်</label>
-                                <input type="text" id="username" required placeholder="Your Username" class="input-field w-full px-7 py-5 rounded-3xl font-bold text-lg">
-                            </div>
-                            <div class="space-y-3">
-                                <label class="text-[9px] font-black text-gray-500 uppercase tracking-[0.3em] ml-2 t-l-amt">Robux ပမာဏ</label>
-                                <input type="number" id="amount" required placeholder="100" class="input-field w-full px-7 py-5 rounded-3xl font-bold text-lg">
-                            </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest t-l-pay">Payment Source</label>
+                            <select id="payment" class="form-input w-full px-5 py-4 rounded-xl font-medium cursor-pointer appearance-none bg-no-repeat bg-[right_1.25rem_center]" style="background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 24 24%22 stroke=%22rgba(255,255,255,0.3)%22%3E%3Cpath stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%222%22 d=%22M19 9l-7 7-7-7%22/%3E%3C/svg%3E'); background-size: 1rem;">
+                                <option value="KPay" class="bg-zinc-900">KBZ Pay</option>
+                                <option value="WavePay" class="bg-zinc-900">Wave Pay</option>
+                            </select>
                         </div>
-
-                        <div class="bg-zinc-900/40 border border-white/5 p-8 rounded-[2.5rem] flex flex-col items-center justify-center">
-                            <span class="text-[9px] font-black text-gray-500 uppercase tracking-[0.4em] mb-2 t-total-price">စုစုပေါင်း ကျသင့်ငွေ</span>
-                            <div class="flex items-baseline gap-2">
-                                <span id="totalDisplay" class="text-5xl font-black italic">0</span>
-                                <span class="text-lg font-bold text-gray-600 uppercase tracking-widest">Ks</span>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <div class="space-y-3">
-                                <label class="text-[9px] font-black text-gray-500 uppercase tracking-[0.3em] ml-2 t-l-pay">ငွေပေးချေမှုပုံစံ</label>
-                                <select id="payment" class="input-field w-full px-7 py-5 rounded-3xl font-bold text-white outline-none appearance-none cursor-pointer">
-                                    <option value="KPay" class="bg-zinc-900">KBZ Pay</option>
-                                    <option value="WavePay" class="bg-zinc-900">Wave Pay</option>
-                                </select>
-                            </div>
-                            <div class="space-y-3">
-                                <label class="text-[9px] font-black text-gray-500 uppercase tracking-[0.3em] ml-2 t-l-slip">ငွေလွှဲလက်မှတ်</label>
-                                <div class="relative">
-                                    <input type="file" id="file" accept="image/*" required class="absolute inset-0 opacity-0 cursor-pointer z-10" onchange="handleFile(event)">
-                                    <div id="fileBtn" class="input-field w-full px-7 py-5 rounded-3xl font-bold text-xs text-gray-400 flex items-center justify-center gap-3">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                                        <span class="t-upload">ဓာတ်ပုံတင်ရန်</span>
-                                    </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest t-l-slip">Transaction Screenshot</label>
+                            <div class="relative">
+                                <input type="file" id="file" accept="image/*" required class="absolute inset-0 opacity-0 cursor-pointer z-10" onchange="handleFile(event)">
+                                <div id="fileBtn" class="form-input w-full px-5 py-4 rounded-xl text-xs font-bold text-gray-500 flex items-center justify-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                                    <span class="t-upload">Upload Slip</span>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div id="previewBox" class="hidden relative rounded-[2rem] overflow-hidden border border-white/10 p-2 bg-black/30">
-                            <img id="previewImg" src="" class="w-full h-40 object-contain rounded-xl">
+                    <div id="previewBox" class="hidden animate-fade">
+                        <div class="relative w-full max-w-xs mx-auto aspect-video rounded-xl overflow-hidden border border-white/10 group">
+                            <img id="previewImg" src="" class="w-full h-full object-cover">
+                            <button type="button" onclick="resetFile()" class="absolute top-2 right-2 p-1.5 bg-black/50 hover:bg-red-500 rounded-lg text-white transition-colors">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            </button>
                         </div>
+                    </div>
 
-                        <button type="submit" id="submitBtn" class="btn-brand w-full py-6 rounded-[2.5rem] font-black text-lg italic tracking-tighter uppercase t-submit">
-                            မှာယူမှုကို အတည်ပြုမည်
-                        </button>
-                    </form>
-                </div>
+                    <button type="submit" id="submitBtn" class="btn-primary w-full py-5 rounded-2xl text-sm uppercase tracking-widest t-submit">
+                        Confirm & Place Order
+                    </button>
+                </form>
             </div>
         </div>
     </main>
 
-    <div id="modal" class="fixed inset-0 bg-black/95 hidden items-center justify-center z-[110] p-6 backdrop-blur-3xl">
-        <div class="glass-panel p-10 rounded-[3rem] max-w-sm w-full text-center border-white/10">
-            <div id="m-icon" class="text-5xl mb-6">✨</div>
-            <h3 id="m-title" class="text-2xl font-black mb-3 italic uppercase">Success</h3>
-            <p id="m-desc" class="text-gray-400 text-sm mb-10"></p>
-            <button onclick="closeModal()" class="w-full py-4 rounded-2xl bg-white text-black font-black uppercase tracking-widest text-[10px]">OK</button>
+    <div id="modal" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-[1000] p-6 backdrop-blur-sm">
+        <div class="glass p-8 rounded-2xl max-w-sm w-full text-center animate-fade">
+            <div id="m-icon" class="text-4xl mb-4">✨</div>
+            <h3 id="m-title" class="text-lg font-bold mb-2">Success</h3>
+            <p id="m-desc" class="text-sm text-gray-400 mb-8"></p>
+            <button onclick="closeModal()" class="w-full py-3 bg-white text-black font-bold rounded-xl text-xs uppercase tracking-widest hover:bg-gray-200 transition-colors">Dismiss</button>
         </div>
     </div>
 
     <script>
-        const WEBHOOK = "https://discord.com/api/webhooks/1488209611482992916/ffE72t90-0vTFwIKMoRQw7qSC7QaK6UFMdirBiVZytKj3GVUKIr1K3lsJxsPrxWR8DBP";
-        let currentRate = 35;
-        let currentMethod = 'group';
+        const WEBHOOK_URL = "https://discord.com/api/webhooks/1488209611482992916/ffE72t90-0vTFwIKMoRQw7qSC7QaK6UFMdirBiVZytKj3GVUKIr1K3lsJxsPrxWR8DBP";
+        
+        const state = {
+            rate: 35,
+            method: 'group',
+            language: 'my'
+        };
 
         const translations = {
             my: {
-                't-welcome-sub': "မြန်မာနိုင်ငံ၏ အကောင်းဆုံး Robux အရောင်းဆိုင်",
-                't-enter': "ဆိုင်ထဲသို့ဝင်ရန်",
                 't-premium': "Premium ဝန်ဆောင်မှု",
                 't-official-group': "တရားဝင် Group များ",
-                't-join-title': "Community သို့ဝင်ရန်",
                 't-join-desc': "Group Join စနစ်ဖြင့် ဝယ်ယူရန် ၁၄ ရက်ပြည့်ရပါမည်။",
-                't-join-btn': "Group သို့သွားရန်",
                 't-pay-details': "ငွေပေးချေရန် အကောင့်များ",
-                't-order-now': "မှာယူ <span class='text-orange-500'>ရန်</span>",
+                't-order-now': "မှာယူရန်",
                 't-m-group': "Group Join",
                 't-m-pass': "Gamepass",
                 't-l-user': "Roblox အမည်",
@@ -283,103 +294,88 @@
                 't-upload': "ဓာတ်ပုံတင်ရန်",
                 't-submit': "မှာယူမှုကို အတည်ပြုမည်",
                 'm-success': "အောင်မြင်ပါသည်",
-                'expl-group': "<b class='text-orange-500'>Group Join စနစ်:</b> ကျွန်ုပ်တို့၏ Group ထဲသို့ အရင်ဝင်ထားရပါမည်။ Group ထဲသို့ဝင်ပြီး ၁၄ ရက်ပြည့်မှသာ Robux ထည့်ပေး၍ရပါမည်။ ၁၄ ရက်ပြည့်ပြီးသူများအတွက် ခဏချင်းချက်ချင်း ရရှိပါမည်။",
-                'expl-gamepass': "<b class='text-orange-500'>Gamepass စနစ်:</b> သင်၏ Roblox အကောင့်ထဲတွင် Gamepass တစ်ခုပြုလုပ်ထားရပါမည်။ ဝယ်ယူပြီးပါက Robux ရောက်ရန် ၅ ရက်မှ ၇ ရက်အထိ စောင့်ဆိုင်းရပါမည် (Pending Robux)။ အောက်ပါ Video များတွင် ကြည့်ရှုနိုင်ပါသည်။",
+                'expl-group': "<strong>Group Join စနစ်:</strong> ကျွန်ုပ်တို့၏ Group ထဲသို့ အရင်ဝင်ထားရပါမည်။ ၁၄ ရက်ပြည့်ပြီးသူများအတွက် ခဏချင်းချက်ချင်း ရရှိပါမည်။",
+                'expl-gamepass': "<strong>Gamepass စနစ်:</strong> Roblox အကောင့်ထဲတွင် Gamepass တစ်ခုပြုလုပ်ထားရပါမည်။ Pending Robux အနေဖြင့် ၅ ရက်မှ ၇ ရက်အထိ စောင့်ရပါမည်။",
                 't-video-1': "Gamepass Tutorial",
                 't-video-1-sub': "အဆင့် ၁ - ပြုလုပ်ပုံ",
                 't-video-2': "Second Step",
                 't-video-2-sub': "အဆင့် ၂ - အပြီးသတ်ပုံ"
             },
             en: {
-                't-welcome-sub': "Myanmar's Premium Robux Hub",
-                't-enter': "Enter Store",
-                't-premium': "Premium Hub",
-                't-official-group': "Official Groups",
-                't-join-title': "Join Community",
-                't-join-desc': "Verified deliveries via payouts. 14 days group age required.",
-                't-join-btn': "Visit Group",
-                't-pay-details': "Payment Accounts",
-                't-order-now': "Order <span class='text-orange-500'>Now</span>",
+                't-premium': "Premium Services",
+                't-official-group': "Official Communities",
+                't-join-desc': "Verified deliveries via group payouts. 14 days group age required.",
+                't-pay-details': "Payment Gateways",
+                't-order-now': "Complete Your Order",
                 't-m-group': "Group Join",
                 't-m-pass': "Gamepass",
                 't-l-user': "Roblox Username",
                 't-l-amt': "Robux Amount",
-                't-total-price': "Total Price",
-                't-l-pay': "Payment Method",
-                't-l-slip': "Transaction Slip",
-                't-upload': "UPLOAD SCREENSHOT",
-                't-submit': "Confirm Order",
-                'm-success': "Success",
-                'expl-group': "<b class='text-orange-500'>Group Join:</b> You must join our group first. Robux can only be sent after you have been a member for 14 days. Instant delivery once the 14-day requirement is met.",
-                'expl-gamepass': "<b class='text-orange-500'>Gamepass:</b> You need to create a Gamepass in your Roblox account. Robux will arrive in your account after 5-7 days (Pending Robux). Watch tutorials below.",
+                't-total-price': "Estimated Total",
+                't-l-pay': "Payment Source",
+                't-l-slip': "Transaction Screenshot",
+                't-upload': "Upload Slip",
+                't-submit': "Confirm & Place Order",
+                'm-success': "Order Placed",
+                'expl-group': "<strong>Group Join:</strong> Instant delivery for members with 14+ days of group seniority.",
+                'expl-gamepass': "<strong>Gamepass:</strong> Payout via sales. Robux will remain 'Pending' for 5-7 days before reaching your balance.",
                 't-video-1': "Gamepass Tutorial",
-                't-video-1-sub': "Step 1: Setup Guide",
+                't-video-1-sub': "Step 1: Setup",
                 't-video-2': "Second Step",
-                't-video-2-sub': "Step 2: Finishing Up"
+                't-video-2-sub': "Step 2: Finishing"
             }
         };
 
-        function updateExplanation() {
-            const lang = document.getElementById('langSwitcher').value;
-            const key = currentMethod === 'group' ? 'expl-group' : 'expl-gamepass';
-            document.getElementById('methodExplanation').innerHTML = translations[lang][key];
-            
-            const tut = document.getElementById('tutorialSection');
-            if (currentMethod === 'gamepass') {
-                tut.classList.remove('hidden');
-            } else {
-                tut.classList.add('hidden');
-            }
-        }
-
         function switchLanguage(lang) {
-            Object.keys(translations[lang]).forEach(key => {
+            state.language = lang;
+            const t = translations[lang];
+            Object.keys(t).forEach(key => {
                 const els = document.querySelectorAll('.' + key);
-                els.forEach(el => el.innerHTML = translations[lang][key]);
+                els.forEach(el => {
+                    if (el.tagName === 'INPUT') el.placeholder = t[key];
+                    else el.innerHTML = t[key];
+                });
             });
-            document.documentElement.lang = lang;
             updateExplanation();
+        }
+
+        function setMethod(method, rate) {
+            state.method = method;
+            state.rate = rate;
             
-            // Update Username Placeholder on lang change if it matches default
-            const userInp = document.getElementById('username');
-            if (lang === 'en') {
-                userInp.placeholder = "Your Username";
-            } else {
-                userInp.placeholder = "Your Username"; // Keeps the requested English placeholder even in MM
-            }
-        }
+            const btnGroup = document.getElementById('m-group');
+            const btnPass = document.getElementById('m-gamepass');
+            const activeClass = "bg-orange-500 text-white";
+            const inactiveClass = "text-gray-400 hover:text-white";
 
-        function enterShop() {
-            document.getElementById('welcome-screen').style.transform = 'translateY(-100%)';
-            setTimeout(() => document.getElementById('welcome-screen').style.display = 'none', 800);
-        }
-
-        function setMethod(m, r) {
-            currentMethod = m;
-            currentRate = r;
-            const active = "px-6 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all bg-orange-600 text-white shadow-lg shadow-orange-600/20";
-            const inactive = "px-6 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all text-gray-400";
-            document.getElementById('m-group').className = m === 'group' ? active : inactive;
-            document.getElementById('m-gamepass').className = m === 'gamepass' ? active : inactive;
-            updateTotal();
+            btnGroup.className = `px-6 py-2 rounded-lg text-xs font-bold transition-all ${method === 'group' ? activeClass : inactiveClass}`;
+            btnPass.className = `px-6 py-2 rounded-lg text-xs font-bold transition-all ${method === 'gamepass' ? activeClass : inactiveClass}`;
+            
+            document.getElementById('tutorialSection').classList.toggle('hidden', method !== 'gamepass');
+            
             updateExplanation();
+            calculateTotal();
         }
 
-        function updateTotal() {
-            const val = parseInt(document.getElementById('amount').value) || 0;
-            document.getElementById('totalDisplay').innerText = (val * currentRate).toLocaleString();
+        function updateExplanation() {
+            const key = state.method === 'group' ? 'expl-group' : 'expl-gamepass';
+            document.getElementById('methodExplanation').innerHTML = translations[state.language][key];
         }
-        document.getElementById('amount').addEventListener('input', updateTotal);
+
+        function calculateTotal() {
+            const amt = parseInt(document.getElementById('amount').value) || 0;
+            const total = amt * state.rate;
+            document.getElementById('totalDisplay').innerText = total.toLocaleString();
+        }
 
         function handleFile(e) {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = (event) => {
-                    document.getElementById('previewImg').src = event.target.result;
+                reader.onload = (ev) => {
+                    document.getElementById('previewImg').src = ev.target.result;
                     document.getElementById('previewBox').classList.remove('hidden');
-                    const lang = document.getElementById('langSwitcher').value;
-                    document.querySelector('.t-upload').innerText = lang === 'my' ? "ပုံတင်ပြီးပါပြီ" : "IMAGE READY";
+                    document.querySelector('.t-upload').innerText = state.language === 'my' ? "ပုံတင်ပြီးပါပြီ" : "File Selected";
                 };
                 reader.readAsDataURL(file);
             }
@@ -388,16 +384,18 @@
         function resetFile() {
             document.getElementById('file').value = "";
             document.getElementById('previewBox').classList.add('hidden');
-            const lang = document.getElementById('langSwitcher').value;
-            document.querySelector('.t-upload').innerText = translations[lang]['t-upload'];
+            document.querySelector('.t-upload').innerText = translations[state.language]['t-upload'];
         }
+
+        document.getElementById('amount').addEventListener('input', calculateTotal);
 
         document.getElementById('orderForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
-            const lang = document.getElementById('langSwitcher').value;
+            const originalText = btn.innerText;
+            
             btn.disabled = true;
-            btn.innerText = "WAITING...";
+            btn.innerText = "Processing...";
 
             const user = document.getElementById('username').value;
             const amt = document.getElementById('amount').value;
@@ -405,42 +403,47 @@
             const file = document.getElementById('file').files[0];
 
             const embed = {
-                title: "💎 NEW ORDER RECEIVED",
+                title: "📦 New Order Received",
                 color: 16738816,
                 fields: [
-                    { name: "User", value: `\`${user}\``, inline: true },
-                    { name: "Robux", value: `**${amt}**`, inline: true },
-                    { name: "Cost", value: `**${(amt * currentRate).toLocaleString()} Ks**`, inline: true },
-                    { name: "Method", value: currentMethod.toUpperCase(), inline: true },
-                    { name: "Gateway", value: pay, inline: true }
+                    { name: "Customer", value: `\`${user}\``, inline: true },
+                    { name: "Amount", value: `**${amt} Robux**`, inline: true },
+                    { name: "Total Cost", value: `**${(amt * state.rate).toLocaleString()} MMK**`, inline: true },
+                    { name: "Method", value: state.method.toUpperCase(), inline: true },
+                    { name: "Payment", value: pay, inline: true }
                 ],
+                footer: { text: "HolaShop Order Protection Active" },
                 timestamp: new Date().toISOString()
             };
 
-            const fd = new FormData();
-            fd.append('payload_json', JSON.stringify({ embeds: [embed] }));
-            if (file) fd.append('file', file);
+            const formData = new FormData();
+            formData.append('payload_json', JSON.stringify({ embeds: [embed] }));
+            if (file) formData.append('file', file);
 
             try {
-                const res = await fetch(WEBHOOK, { method: 'POST', body: fd });
-                if (res.ok) {
-                    showModal(translations[lang]['m-success'], "Order sent to admin. Please wait for delivery.", "✨");
+                const response = await fetch(WEBHOOK_URL, { method: 'POST', body: formData });
+                if (response.ok) {
+                    showModal(
+                        translations[state.language]['m-success'],
+                        "We have received your order. Delivery status will be updated soon.",
+                        "✅"
+                    );
                     e.target.reset();
                     resetFile();
-                    updateTotal();
+                    calculateTotal();
                 } else throw new Error();
             } catch (err) {
-                showModal("Error", "Connection error. Please contact support.", "⚠️");
+                showModal("Service Unavailable", "Network error. Please try again later.", "❌");
             } finally {
                 btn.disabled = false;
-                btn.innerText = translations[lang]['t-submit'];
+                btn.innerText = originalText;
             }
         });
 
-        function showModal(t, d, i) {
-            document.getElementById('m-title').innerText = t;
-            document.getElementById('m-desc').innerText = d;
-            document.getElementById('m-icon').innerText = i;
+        function showModal(title, desc, icon) {
+            document.getElementById('m-title').innerText = title;
+            document.getElementById('m-desc').innerText = desc;
+            document.getElementById('m-icon').innerText = icon;
             document.getElementById('modal').classList.replace('hidden', 'flex');
         }
 
@@ -449,8 +452,7 @@
         }
 
         window.onload = () => {
-            switchLanguage('my'); 
-            updateExplanation();
+            switchLanguage('my');
         };
     </script>
 </body>

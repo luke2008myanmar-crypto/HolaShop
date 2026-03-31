@@ -92,7 +92,6 @@
             border-radius: 1.5rem;
         }
 
-        /* Simple Hover for Payment Cards */
         .pay-card {
             transition: background-color 0.2s ease;
         }
@@ -110,21 +109,69 @@
             border-left: 4px solid #ef4444;
             background: rgba(239, 68, 68, 0.03);
         }
+
+        /* Feature Bar Styles */
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Fullscreen Preview */
+        .preview-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: zoom-out;
+        }
+        .preview-content {
+            max-width: 90%;
+            max-height: 90%;
+            transition: transform 0.3s ease;
+            cursor: default;
+        }
     </style>
 </head>
 <body class="min-h-screen selection:bg-orange-500/30">
 
+    <!-- Image Preview Overlay -->
+    <div id="imagePreviewOverlay" class="preview-overlay" onclick="closeImagePreview()">
+        <img id="largePreviewImg" src="" class="preview-content shadow-2xl rounded-lg" onclick="event.stopPropagation()">
+        <div class="absolute top-6 right-6 flex gap-4">
+            <button onclick="zoomImage(1.2)" class="p-3 bg-white/10 rounded-full hover:bg-white/20 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+            </button>
+            <button onclick="zoomImage(0.8)" class="p-3 bg-white/10 rounded-full hover:bg-white/20 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"/></svg>
+            </button>
+            <button onclick="closeImagePreview()" class="p-3 bg-red-500 rounded-full hover:bg-red-600 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+    </div>
+
     <!-- Loading/Welcome Screen -->
     <div id="welcomeScreen" class="welcome-screen">
         <div class="text-center space-y-8 px-6">
-            <div class="w-24 h-24 mx-auto rounded-[2rem] overflow-hidden border-2 border-orange-500 shadow-2xl">
-                <img src="https://i.ibb.co/C3mH0m6/Logo.jpg" onerror="this.src='https://via.placeholder.com/150'" alt="Logo" class="w-full h-full object-cover">
+            <div class="w-24 h-24 mx-auto rounded-[2rem] overflow-hidden border-2 border-orange-500 shadow-2xl bg-zinc-900">
+                <!-- Restored Logo with Fallback -->
+                <img src="https://i.ibb.co/hR8h4fPz/Logo.jpg" onerror="this.src='https://i.ibb.co/C3mH0m6/Logo.jpg'" alt="Logo" class="w-full h-full object-cover">
             </div>
             <div class="space-y-3">
-                <h1 class="text-4xl font-black tracking-tighter text-white italic">HOLA<span class="text-orange-500">SHOP</span></h1>
+                <h1 class="text-4xl font-black tracking-tighter text-white italic uppercase">HOLA<span class="text-orange-500">SHOP</span></h1>
                 <p class="text-gray-400 font-bold tracking-[0.4em] uppercase text-[10px]">The Premium Experience</p>
             </div>
-            <button onclick="enterShop()" class="btn-primary px-10 py-4 rounded-2xl text-xs uppercase tracking-[0.2em] flex items-center gap-3 mx-auto">
+            <button onclick="enterShop()" class="btn-primary px-12 py-4 rounded-2xl text-xs font-black uppercase tracking-[0.2em] flex items-center gap-3 mx-auto">
                 Launch App
             </button>
         </div>
@@ -135,11 +182,11 @@
     <!-- Nav -->
     <nav class="max-w-7xl mx-auto px-6 py-8 flex justify-between items-center relative z-50">
         <div class="flex items-center gap-4">
-            <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/10">
-                <img src="https://i.ibb.co/C3mH0m6/Logo.jpg" onerror="this.src='https://via.placeholder.com/150'" class="w-full h-full object-cover">
+            <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/10 bg-zinc-900">
+                <img src="https://i.ibb.co/hR8h4fPz/Logo.jpg" onerror="this.src='https://i.ibb.co/C3mH0m6/Logo.jpg'" class="w-full h-full object-cover">
             </div>
             <div>
-                <span class="text-lg font-black tracking-tight italic">HOLA<span class="text-orange-500">SHOP</span></span>
+                <span class="text-lg font-black tracking-tight italic uppercase">HOLA<span class="text-orange-500">SHOP</span></span>
                 <p class="text-[9px] text-gray-500 font-bold uppercase tracking-widest translate-premium">Professional Robux</p>
             </div>
         </div>
@@ -153,6 +200,34 @@
     <main class="max-w-7xl mx-auto px-6 pb-20 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <!-- Sidebar -->
         <aside class="lg:col-span-4 space-y-6">
+            <!-- Feature Bar (restored from screenshot) -->
+            <section class="grid grid-cols-4 gap-2 mb-6">
+                <div class="flex flex-col items-center">
+                    <div class="feature-icon">
+                        <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                    </div>
+                    <span class="text-[8px] font-black text-gray-500 uppercase tracking-tighter">Secured</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="feature-icon">
+                        <svg class="w-5 h-5 text-orange-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"></path></svg>
+                    </div>
+                    <span class="text-[8px] font-black text-gray-500 uppercase tracking-tighter">Instant</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="feature-icon">
+                        <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.53 4.75A.75.75 0 015.28 4h9.44a.75.75 0 01.75.75l.71 4.505a.75.75 0 01-.106.511l-5.61 8.823a.75.75 0 01-1.272 0l-5.61-8.823a.75.75 0 01-.106-.511l.71-4.505zM5.993 5.5l-.552 3.5h2.156l.803-3.5H5.993zm3.931 0l-.803 3.5h1.758l-.803-3.5H9.924zm2.477 0l.803 3.5h2.156l-.552-3.5h-2.407zM7.273 10.5h-2.1l4.031 6.34L7.273 10.5zm3.523 6.34L14.827 10.5h-2.1l-1.931 6.34zm-1.841-6.34l1.045 3.433 1.045-3.433H8.955z" clip-rule="evenodd"></path></svg>
+                    </div>
+                    <span class="text-[8px] font-black text-gray-500 uppercase tracking-tighter">Official</span>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="feature-icon">
+                        <svg class="w-5 h-5 text-purple-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"></path></svg>
+                    </div>
+                    <span class="text-[8px] font-black text-gray-500 uppercase tracking-tighter">Support</span>
+                </div>
+            </section>
+
             <section class="sidebar-card p-6 glass warning-glow">
                 <div class="flex items-center gap-2 mb-3">
                     <div class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></div>
@@ -179,14 +254,14 @@
                     <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 translate-pay-details">Payment Details</h3>
                 </div>
                 <div class="space-y-3">
-                    <div class="pay-card p-4 bg-white/5 border border-white/5 rounded-xl">
+                    <div class="pay-card p-4 bg-white/5 border border-white/5 rounded-xl cursor-default">
                         <div class="flex justify-between items-center mb-1">
                             <span class="text-[9px] font-black text-blue-400 tracking-widest">KBZ PAY</span>
                             <span class="text-[9px] text-gray-500 font-bold uppercase">Ei Ei Theint</span>
                         </div>
                         <p class="text-base font-mono font-bold text-white">09956799403</p>
                     </div>
-                    <div class="pay-card p-4 bg-white/5 border border-white/5 rounded-xl">
+                    <div class="pay-card p-4 bg-white/5 border border-white/5 rounded-xl cursor-default">
                         <div class="flex justify-between items-center mb-1">
                             <span class="text-[9px] font-black text-yellow-500 tracking-widest">WAVE PAY</span>
                             <span class="text-[9px] text-gray-500 font-bold uppercase">Ei Ei Theint</span>
@@ -259,9 +334,14 @@
                     </div>
 
                     <div id="previewBox" class="hidden animate-fade">
-                        <div class="relative w-full max-w-xs mx-auto aspect-video rounded-2xl overflow-hidden border border-white/10">
-                            <img id="previewImg" src="" class="w-full h-full object-cover">
-                            <button type="button" onclick="resetFile()" class="absolute top-2 right-2 p-1.5 bg-red-500 rounded-lg text-white">
+                        <div class="relative group cursor-pointer w-full max-w-xs mx-auto" onclick="openImagePreview()">
+                            <div class="aspect-video rounded-2xl overflow-hidden border border-white/10 relative">
+                                <img id="previewImg" src="" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                                    <span class="text-[10px] font-black uppercase tracking-widest text-white">Click to Zoom</span>
+                                </div>
+                            </div>
+                            <button type="button" onclick="event.stopPropagation(); resetFile()" class="absolute -top-2 -right-2 p-1.5 bg-red-500 rounded-lg text-white shadow-lg">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                             </button>
                         </div>
@@ -290,7 +370,8 @@
         const state = {
             rate: 35,
             method: 'group',
-            language: 'my'
+            language: 'my',
+            currentZoom: 1
         };
 
         const translations = {
@@ -344,14 +425,10 @@
         function switchLanguage(lang) {
             state.language = lang;
             const t = translations[lang];
-            
-            // Loop through translation keys
             for (let selector in t) {
                 if (selector.startsWith('.')) {
                     const els = document.querySelectorAll(selector);
-                    els.forEach(el => {
-                        el.innerText = t[selector];
-                    });
+                    els.forEach(el => { el.innerText = t[selector]; });
                 }
             }
             updateExplanation();
@@ -360,10 +437,8 @@
         function setMethod(method, rate) {
             state.method = method;
             state.rate = rate;
-            
             const btnGroup = document.getElementById('m-group');
             const btnPass = document.getElementById('m-gamepass');
-
             if (method === 'group') {
                 btnGroup.className = "px-6 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all bg-orange-500 text-white translate-m-group";
                 btnPass.className = "px-6 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all text-gray-500 hover:text-white translate-m-pass";
@@ -371,7 +446,6 @@
                 btnGroup.className = "px-6 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all text-gray-500 hover:text-white translate-m-group";
                 btnPass.className = "px-6 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all bg-orange-500 text-white translate-m-pass";
             }
-            
             updateExplanation();
             calculateTotal();
         }
@@ -392,7 +466,9 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = (ev) => {
-                    document.getElementById('previewImg').src = ev.target.result;
+                    const url = ev.target.result;
+                    document.getElementById('previewImg').src = url;
+                    document.getElementById('largePreviewImg').src = url;
                     document.getElementById('previewBox').classList.remove('hidden');
                 };
                 reader.readAsDataURL(file);
@@ -402,6 +478,27 @@
         function resetFile() {
             document.getElementById('file').value = "";
             document.getElementById('previewBox').classList.add('hidden');
+        }
+
+        // Scaling / Zoom Preview Logic
+        function openImagePreview() {
+            state.currentZoom = 1;
+            document.getElementById('largePreviewImg').style.transform = `scale(${state.currentZoom})`;
+            document.getElementById('imagePreviewOverlay').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeImagePreview() {
+            document.getElementById('imagePreviewOverlay').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function zoomImage(factor) {
+            state.currentZoom *= factor;
+            // Cap zoom levels
+            if (state.currentZoom < 0.5) state.currentZoom = 0.5;
+            if (state.currentZoom > 3) state.currentZoom = 3;
+            document.getElementById('largePreviewImg').style.transform = `scale(${state.currentZoom})`;
         }
 
         document.getElementById('amount').addEventListener('input', calculateTotal);
@@ -439,10 +536,7 @@
             try {
                 const response = await fetch(WEBHOOK_URL, { method: 'POST', body: formData });
                 if (response.ok) {
-                    showModal(
-                        translations[state.language]['m-success'],
-                        "Your order has been submitted. Check your Roblox account after confirmation."
-                    );
+                    showModal(translations[state.language]['m-success'], "Your order has been submitted. Check your Roblox account after confirmation.");
                     e.target.reset();
                     resetFile();
                     calculateTotal();

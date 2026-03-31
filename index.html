@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HolaShop | Premium Robux Provider</title>
     
-    <link rel="icon" type="image/jpeg" href="Logo.jpg">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pyidaungsu:wght@400;700&display=swap" rel="stylesheet">
     
@@ -80,17 +79,11 @@
             background: var(--accent);
             transition: all 0.2s;
             font-weight: 700;
-            box-shadow: 0 4px 20px rgba(255, 107, 0, 0.2);
         }
 
         .btn-primary:hover {
             background: var(--accent-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 107, 0, 0.3);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0px);
+            transform: translateY(-1px);
         }
 
         .sidebar-card {
@@ -99,231 +92,200 @@
             border-radius: 1.5rem;
         }
 
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        /* Simple Hover for Payment Cards */
+        .pay-card {
+            transition: background-color 0.2s ease;
+        }
+        .pay-card:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+        }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .animate-fade { animation: fadeIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
-
-        @keyframes pulse-gold {
-            0% { transform: scale(1); filter: drop-shadow(0 0 0px var(--accent)); }
-            50% { transform: scale(1.05); filter: drop-shadow(0 0 25px rgba(255, 107, 0, 0.4)); }
-            100% { transform: scale(1); filter: drop-shadow(0 0 0px var(--accent)); }
-        }
-        .pulse-logo { animation: pulse-gold 3s infinite ease-in-out; }
+        .animate-fade { animation: fadeIn 0.5s ease-out forwards; }
 
         .warning-glow {
             border-left: 4px solid #ef4444;
-            background: rgba(239, 68, 68, 0.05);
+            background: rgba(239, 68, 68, 0.03);
         }
     </style>
 </head>
 <body class="min-h-screen selection:bg-orange-500/30">
 
+    <!-- Loading/Welcome Screen -->
     <div id="welcomeScreen" class="welcome-screen">
         <div class="text-center space-y-8 px-6">
-            <div class="w-28 h-28 mx-auto rounded-[2rem] overflow-hidden border-2 border-orange-500/30 pulse-logo shadow-2xl">
-                <img src="Logo.jpg" alt="Logo" class="w-full h-full object-cover">
+            <div class="w-24 h-24 mx-auto rounded-[2rem] overflow-hidden border-2 border-orange-500 shadow-2xl">
+                <img src="https://i.ibb.co/C3mH0m6/Logo.jpg" onerror="this.src='https://via.placeholder.com/150'" alt="Logo" class="w-full h-full object-cover">
             </div>
             <div class="space-y-3">
-                <h1 class="text-5xl font-black tracking-tighter text-white italic">HOLA<span class="text-orange-500">SHOP</span></h1>
+                <h1 class="text-4xl font-black tracking-tighter text-white italic">HOLA<span class="text-orange-500">SHOP</span></h1>
                 <p class="text-gray-400 font-bold tracking-[0.4em] uppercase text-[10px]">The Premium Experience</p>
             </div>
-            <button onclick="enterShop()" class="btn-primary px-12 py-4 rounded-2xl text-xs uppercase tracking-[0.2em] flex items-center gap-3 mx-auto">
+            <button onclick="enterShop()" class="btn-primary px-10 py-4 rounded-2xl text-xs uppercase tracking-[0.2em] flex items-center gap-3 mx-auto">
                 Launch App
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
             </button>
         </div>
     </div>
 
     <div class="hero-gradient"></div>
 
-    <nav class="max-w-7xl mx-auto px-6 py-10 flex justify-between items-center relative z-50">
+    <!-- Nav -->
+    <nav class="max-w-7xl mx-auto px-6 py-8 flex justify-between items-center relative z-50">
         <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-xl overflow-hidden border border-white/10 shadow-lg">
-                <img src="Logo.jpg" alt="Logo" class="w-full h-full object-cover">
+            <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/10">
+                <img src="https://i.ibb.co/C3mH0m6/Logo.jpg" onerror="this.src='https://via.placeholder.com/150'" class="w-full h-full object-cover">
             </div>
             <div>
-                <span class="text-xl font-black tracking-tight italic">HOLA<span class="text-orange-500">SHOP</span></span>
-                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest t-premium">Professional Robux</p>
+                <span class="text-lg font-black tracking-tight italic">HOLA<span class="text-orange-500">SHOP</span></span>
+                <p class="text-[9px] text-gray-500 font-bold uppercase tracking-widest translate-premium">Professional Robux</p>
             </div>
         </div>
         
-        <div class="flex items-center gap-4">
-            <select id="langSwitcher" onchange="switchLanguage(this.value)" class="glass border border-white/10 rounded-xl px-4 py-2 text-[10px] font-bold uppercase tracking-widest focus:outline-none cursor-pointer hover:bg-white/10 transition-colors">
-                <option value="my">🇲🇲 Myanmar</option>
-                <option value="en">🇺🇸 English</option>
-            </select>
-        </div>
+        <select id="langSwitcher" onchange="switchLanguage(this.value)" class="glass border border-white/10 rounded-xl px-4 py-2 text-[10px] font-bold uppercase tracking-widest focus:outline-none cursor-pointer">
+            <option value="my">🇲🇲 Myanmar</option>
+            <option value="en">🇺🇸 English</option>
+        </select>
     </nav>
 
-    <main class="max-w-7xl mx-auto px-6 pb-24 grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-        <aside class="lg:col-span-4 space-y-8">
-            <section class="sidebar-card p-8 glass warning-glow">
-                <div class="flex items-center gap-2 mb-4">
+    <main class="max-w-7xl mx-auto px-6 pb-20 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Sidebar -->
+        <aside class="lg:col-span-4 space-y-6">
+            <section class="sidebar-card p-6 glass warning-glow">
+                <div class="flex items-center gap-2 mb-3">
                     <div class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></div>
-                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-red-400 t-required-join">Crucial Requirement</h3>
+                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-red-400 translate-required-join">Crucial Requirement</h3>
                 </div>
-                <p class="text-xs font-bold text-gray-200 leading-relaxed mb-6 t-must-join-msg">
+                <p class="text-xs font-medium text-gray-300 leading-relaxed mb-6 translate-must-join-msg">
                     You MUST join BOTH groups below. Orders without both group memberships will be CANCELLED and NO REFUNDS will be issued.
                 </p>
-                <div class="space-y-3">
-                    <a href="https://www.roblox.com/communities/787559488" target="_blank" class="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5 hover:border-orange-500/50 hover:bg-orange-500/5 transition-all group">
-                        <div>
-                            <p class="text-[9px] text-gray-500 uppercase font-bold tracking-tighter">Primary Group</p>
-                            <span class="text-xs font-bold">Golden Myanmar</span>
-                        </div>
-                        <svg class="w-4 h-4 text-gray-600 group-hover:text-orange-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                <div class="space-y-2">
+                    <a href="https://www.roblox.com/communities/787559488" target="_blank" class="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/5 hover:border-orange-500/40 transition-all group">
+                        <span class="text-xs font-bold">Golden Myanmar</span>
+                        <svg class="w-3 h-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                     </a>
-                    <a href="https://www.roblox.com/communities/1031541384" target="_blank" class="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-white/5 hover:border-orange-500/50 hover:bg-orange-500/5 transition-all group">
-                        <div>
-                            <p class="text-[9px] text-gray-500 uppercase font-bold tracking-tighter">Secondary Group</p>
-                            <span class="text-xs font-bold">Ti Htwin Community</span>
-                        </div>
-                        <svg class="w-4 h-4 text-gray-600 group-hover:text-orange-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    <a href="https://www.roblox.com/communities/1031541384" target="_blank" class="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/5 hover:border-orange-500/40 transition-all group">
+                        <span class="text-xs font-bold">Ti Htwin Community</span>
+                        <svg class="w-3 h-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                     </a>
                 </div>
             </section>
 
-            <section class="sidebar-card p-8 glass">
-                <div class="flex items-center gap-2 mb-6">
-                    <div class="w-1 h-4 bg-orange-500 rounded-full"></div>
-                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 t-pay-details">Secure Payments</h3>
+            <section class="sidebar-card p-6 glass">
+                <div class="flex items-center gap-2 mb-5">
+                    <div class="w-1 h-3 bg-orange-500 rounded-full"></div>
+                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 translate-pay-details">Payment Details</h3>
                 </div>
-                <div class="space-y-4">
-                    <div class="p-5 bg-blue-500/5 border border-blue-500/10 rounded-2xl">
-                        <div class="flex justify-between items-center mb-2">
+                <div class="space-y-3">
+                    <div class="pay-card p-4 bg-white/5 border border-white/5 rounded-xl">
+                        <div class="flex justify-between items-center mb-1">
                             <span class="text-[9px] font-black text-blue-400 tracking-widest">KBZ PAY</span>
                             <span class="text-[9px] text-gray-500 font-bold uppercase">Ei Ei Theint</span>
                         </div>
-                        <p class="text-lg font-mono font-bold tracking-widest text-white">09956799403</p>
+                        <p class="text-base font-mono font-bold text-white">09956799403</p>
                     </div>
-                    <div class="p-5 bg-yellow-500/5 border border-yellow-500/10 rounded-2xl">
-                        <div class="flex justify-between items-center mb-2">
+                    <div class="pay-card p-4 bg-white/5 border border-white/5 rounded-xl">
+                        <div class="flex justify-between items-center mb-1">
                             <span class="text-[9px] font-black text-yellow-500 tracking-widest">WAVE PAY</span>
                             <span class="text-[9px] text-gray-500 font-bold uppercase">Ei Ei Theint</span>
                         </div>
-                        <p class="text-lg font-mono font-bold tracking-widest text-white">09956799403</p>
+                        <p class="text-base font-mono font-bold text-white">09956799403</p>
                     </div>
                 </div>
             </section>
         </aside>
 
+        <!-- Form Area -->
         <div class="lg:col-span-8">
-            <div class="glass rounded-[2.5rem] p-10 md:p-14 shadow-2xl relative overflow-hidden animate-fade">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-12 pb-10 border-b border-white/5">
+            <div class="glass rounded-[2rem] p-8 md:p-12 shadow-2xl animate-fade">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 pb-8 border-b border-white/5">
                     <div>
-                        <h2 class="text-3xl font-black tracking-tighter t-order-now italic">Order Terminal</h2>
-                        <p class="text-xs text-gray-500 mt-2 font-medium tracking-wide">Configure your purchase and delivery protocol.</p>
+                        <h2 class="text-2xl font-black tracking-tighter translate-order-now italic">Order Terminal</h2>
                     </div>
-                    <div class="inline-flex p-1.5 bg-white/5 rounded-2xl border border-white/10">
-                        <button onclick="setMethod('group', 35)" id="m-group" class="px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all bg-orange-500 text-white t-m-group">Group Join</button>
-                        <button onclick="setMethod('gamepass', 32)" id="m-gamepass" class="px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all text-gray-500 hover:text-white t-m-pass">Gamepass</button>
-                    </div>
-                </div>
-
-                <div id="methodInfo" class="mb-12 p-6 bg-orange-500/5 border border-orange-500/10 rounded-[2rem]">
-                    <div class="flex gap-5">
-                        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-500">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        </div>
-                        <div id="methodExplanation" class="text-xs leading-relaxed text-gray-300 font-medium"></div>
-                    </div>
-                    
-                    <div id="tutorialSection" class="hidden mt-8 grid grid-cols-1 md:grid-cols-2 gap-5 border-t border-white/5 pt-8">
-                        <a href="https://youtu.be/baVhMaKcBYI" target="_blank" class="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/5 hover:bg-white/10 transition-all">
-                            <div class="w-10 h-10 flex items-center justify-center bg-red-600 rounded-xl shadow-lg">
-                                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                            </div>
-                            <div>
-                                <p class="text-[10px] font-black uppercase tracking-widest t-video-1">Gamepass Tutorial</p>
-                                <p class="text-[9px] text-gray-500 font-bold t-video-1-sub">Phase 1: Setup</p>
-                            </div>
-                        </a>
-                        <a href="https://youtube.com/shorts/monL5fkneR8" target="_blank" class="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/5 hover:bg-white/10 transition-all">
-                            <div class="w-10 h-10 flex items-center justify-center bg-red-600 rounded-xl shadow-lg">
-                                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                            </div>
-                            <div>
-                                <p class="text-[10px] font-black uppercase tracking-widest t-video-2">Finalization</p>
-                                <p class="text-[9px] text-gray-500 font-bold t-video-2-sub">Phase 2: Completion</p>
-                            </div>
-                        </a>
+                    <div class="inline-flex p-1 bg-white/5 rounded-xl border border-white/10">
+                        <button onclick="setMethod('group', 35)" id="m-group" class="px-6 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all bg-orange-500 text-white translate-m-group">Group Join</button>
+                        <button onclick="setMethod('gamepass', 32)" id="m-gamepass" class="px-6 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all text-gray-500 hover:text-white translate-m-pass">Gamepass</button>
                     </div>
                 </div>
 
-                <form id="orderForm" class="space-y-10">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div class="space-y-3">
-                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-[0.2em] t-l-user">Roblox Identifier</label>
-                            <input type="text" id="username" required placeholder="Target Username" class="form-input w-full px-6 py-5 rounded-2xl font-bold text-sm">
+                <div id="methodInfo" class="mb-10 p-5 bg-orange-500/5 border border-orange-500/10 rounded-2xl">
+                    <p id="methodExplanation" class="text-xs leading-relaxed text-gray-300 font-medium"></p>
+                </div>
+
+                <form id="orderForm" class="space-y-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest translate-l-user">Roblox Username</label>
+                            <input type="text" id="username" required placeholder="Target Name" class="form-input w-full px-5 py-4 rounded-xl font-bold text-sm">
                         </div>
-                        <div class="space-y-3">
-                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-[0.2em] t-l-amt">Robux Volume</label>
-                            <input type="number" id="amount" required placeholder="Min 100" class="form-input w-full px-6 py-5 rounded-2xl font-bold text-sm">
+                        <div class="space-y-2">
+                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest translate-l-amt">Robux Amount</label>
+                            <input type="number" id="amount" required placeholder="Min 100" class="form-input w-full px-5 py-4 rounded-xl font-bold text-sm">
                         </div>
                     </div>
 
-                    <div class="p-10 bg-white/5 rounded-[2.5rem] border border-white/5 text-center shadow-inner">
-                        <span class="text-[9px] font-black text-gray-500 uppercase tracking-[0.3em] t-total-price">Calculated Settlement</span>
-                        <div class="mt-3 flex items-baseline justify-center gap-3">
-                            <span id="totalDisplay" class="text-5xl font-black text-white italic">0</span>
-                            <span class="text-[10px] font-black text-orange-500 uppercase tracking-widest">MMK</span>
+                    <div class="space-y-2">
+                        <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest translate-l-note">Order Note (Optional)</label>
+                        <textarea id="note" rows="2" placeholder="Any special requests or details..." class="form-input w-full px-5 py-4 rounded-xl font-bold text-sm resize-none"></textarea>
+                    </div>
+
+                    <div class="p-8 bg-white/5 rounded-2xl border border-white/5 text-center">
+                        <span class="text-[9px] font-black text-gray-500 uppercase tracking-[0.2em] translate-total-price">Calculated Settlement</span>
+                        <div class="mt-2 flex items-baseline justify-center gap-2">
+                            <span id="totalDisplay" class="text-4xl font-black text-white italic">0</span>
+                            <span class="text-[10px] font-black text-orange-500">MMK</span>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div class="space-y-3">
-                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-[0.2em] t-l-pay">Payment Protocol</label>
-                            <select id="payment" class="form-input w-full px-6 py-5 rounded-2xl font-bold text-sm cursor-pointer appearance-none bg-no-repeat bg-[right_1.5rem_center]" style="background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 24 24%22 stroke=%22rgba(255,255,255,0.3)%22%3E%3Cpath stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%222%22 d=%22M19 9l-7 7-7-7%22/%3E%3C/svg%3E'); background-size: 1.2rem;">
-                                <option value="KPay" class="bg-zinc-900">KBZ Pay (Transfer)</option>
-                                <option value="WavePay" class="bg-zinc-900">Wave Pay (Transfer)</option>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest translate-l-pay">Payment Method</label>
+                            <select id="payment" class="form-input w-full px-5 py-4 rounded-xl font-bold text-sm cursor-pointer appearance-none bg-zinc-900">
+                                <option value="KPay">KBZ Pay (Transfer)</option>
+                                <option value="WavePay">Wave Pay (Transfer)</option>
                             </select>
                         </div>
-                        <div class="space-y-3">
-                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-[0.2em] t-l-slip">Evidence Submission</label>
-                            <div class="relative group">
+                        <div class="space-y-2">
+                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest translate-l-slip">Transfer Slip</label>
+                            <div class="relative">
                                 <input type="file" id="file" accept="image/*" required class="absolute inset-0 opacity-0 cursor-pointer z-10" onchange="handleFile(event)">
-                                <div id="fileBtn" class="form-input w-full px-6 py-5 rounded-2xl text-[10px] font-black text-gray-500 uppercase tracking-widest flex items-center justify-center gap-3 group-hover:border-orange-500/50 transition-colors">
-                                    <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-                                    <span class="t-upload">Upload Slip</span>
+                                <div id="fileBtn" class="form-input w-full px-5 py-4 rounded-xl text-[10px] font-black text-gray-500 uppercase tracking-widest flex items-center justify-center gap-2">
+                                    <span class="translate-upload">Upload Slip</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div id="previewBox" class="hidden animate-fade">
-                        <div class="relative w-full max-w-sm mx-auto aspect-video rounded-3xl overflow-hidden border border-white/10 group shadow-2xl">
+                        <div class="relative w-full max-w-xs mx-auto aspect-video rounded-2xl overflow-hidden border border-white/10">
                             <img id="previewImg" src="" class="w-full h-full object-cover">
-                            <button type="button" onclick="resetFile()" class="absolute top-4 right-4 p-2.5 bg-black/60 hover:bg-red-500 rounded-xl text-white transition-all backdrop-blur-md">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            <button type="button" onclick="resetFile()" class="absolute top-2 right-2 p-1.5 bg-red-500 rounded-lg text-white">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                             </button>
                         </div>
                     </div>
 
-                    <button type="submit" id="submitBtn" class="btn-primary w-full py-6 rounded-[1.5rem] text-[10px] uppercase tracking-[0.4em] t-submit">
-                        Initialize Order Transfer
+                    <button type="submit" id="submitBtn" class="btn-primary w-full py-5 rounded-xl text-[10px] uppercase tracking-[0.3em] translate-submit">
+                        Initialize Order
                     </button>
                 </form>
             </div>
         </div>
     </main>
 
-    <div id="modal" class="fixed inset-0 bg-black/90 hidden items-center justify-center z-[1000] p-6 backdrop-blur-md">
-        <div class="glass p-10 rounded-[2.5rem] max-w-sm w-full text-center animate-fade">
-            <div id="m-icon" class="text-5xl mb-6">✨</div>
-            <h3 id="m-title" class="text-xl font-black mb-3 italic">Success</h3>
-            <p id="m-desc" class="text-xs text-gray-400 font-medium leading-relaxed mb-10"></p>
-            <button onclick="closeModal()" class="w-full py-4 bg-white text-black font-black rounded-2xl text-[10px] uppercase tracking-[0.3em] hover:bg-gray-200 transition-all">Understood</button>
+    <!-- Simple Modal -->
+    <div id="modal" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-[1000] p-6 backdrop-blur-sm">
+        <div class="glass p-8 rounded-3xl max-w-sm w-full text-center">
+            <h3 id="m-title" class="text-xl font-black mb-2 italic">Success</h3>
+            <p id="m-desc" class="text-xs text-gray-400 mb-8"></p>
+            <button onclick="closeModal()" class="w-full py-4 bg-orange-500 text-white font-black rounded-xl text-[10px] uppercase tracking-widest">OK</button>
         </div>
     </div>
 
     <script>
-        const WEBHOOK_URL = "https://discord.com/api/webhooks/1488209611482992916/ffE72t90-0vTFwIKMoRQw7qSC7QaK6UFMdirBiVZytKj3GVUKIr1K3lsJxsPrxWR8DBP";
+        const WEBHOOK_URL = "https://discord.com/api/webhooks/1345648820961148299/ffE72t90-0vTFwIKMoRQw7qSC7QaK6UFMdirBiVZytKj3GVUKIr1K3lsJxsPrxWR8DBP";
         
         const state = {
             rate: 35,
@@ -333,52 +295,44 @@
 
         const translations = {
             my: {
-                't-premium': "Professional Robux",
-                't-official-group': "တရားဝင် Group များ",
-                't-required-join': "အထူးသတိပေးချက်",
-                't-must-join-msg': "အောက်ပါ Group (၂) ခုလုံးကို မဖြစ်မနေ Join ထားရပါမည်။ Join မထားပါက Order ကို Cancel လုပ်မည်ဖြစ်ပြီး ငွေပြန်အမ်းပေးမည် မဟုတ်ပါ။",
-                't-pay-details': "ငွေပေးချေရန်",
-                't-order-now': "Order Terminal",
-                't-m-group': "Group Join",
-                't-m-pass': "Gamepass",
-                't-l-user': "Roblox အမည်",
-                't-l-amt': "Robux ပမာဏ",
-                't-total-price': "ကျသင့်ငွေ",
-                't-l-pay': "ငွေပေးချေမှုပုံစံ",
-                't-l-slip': "ငွေလွှဲလက်မှတ်",
-                't-upload': "ဓာတ်ပုံတင်ရန်",
-                't-submit': "မှာယူမှုကို အတည်ပြုမည်",
+                '.translate-premium': "Professional Robux ဝန်ဆောင်မှု",
+                '.translate-required-join': "အထူးသတိပေးချက်",
+                '.translate-must-join-msg': "အောက်ပါ Group (၂) ခုလုံးကို မဖြစ်မနေ Join ထားရပါမည်။ Join မထားပါက Order ကို Cancel လုပ်မည်ဖြစ်ပြီး ငွေပြန်အမ်းပေးမည် မဟုတ်ပါ။",
+                '.translate-pay-details': "ငွေပေးချေရန်",
+                '.translate-order-now': "Order တင်ရန်",
+                '.translate-m-group': "Group Join",
+                '.translate-m-pass': "Gamepass",
+                '.translate-l-user': "Roblox အမည်",
+                '.translate-l-amt': "Robux ပမာဏ",
+                '.translate-l-note': "မှတ်ချက် (Optional)",
+                '.translate-total-price': "ကျသင့်ငွေ",
+                '.translate-l-pay': "ငွေပေးချေမှုပုံစံ",
+                '.translate-l-slip': "ငွေလွှဲလက်မှတ်",
+                '.translate-upload': "ဓာတ်ပုံတင်ရန်",
+                '.translate-submit': "မှာယူမှုကို အတည်ပြုမည်",
                 'm-success': "Order လက်ခံရရှိပါသည်",
-                'expl-group': "<strong>Group Join:</strong> Group ထဲသို့ဝင်ထားရပါမည်။ ၁၄ ရက်ပြည့်ပြီးသူများအတွက် ခဏချင်း ရရှိပါမည်။ <em>(Group ၂ ခုလုံးဝင်ထားရန် လိုအပ်သည်)</em>",
-                'expl-gamepass': "<strong>Gamepass:</strong> Gamepass ပြုလုပ်ထားရန်လိုပါသည်။ Robux ရောက်ရန် ၅ ရက်မှ ၇ ရက်အထိ စောင့်ရပါမည်။",
-                't-video-1': "Gamepass Tutorial",
-                't-video-1-sub': "အဆင့် ၁ - ပြုလုပ်ပုံ",
-                't-video-2': "Finalization",
-                't-video-2-sub': "အဆင့် ၂ - အပြီးသတ်ပုံ"
+                'expl-group': "<strong>Group Join:</strong> Group ထဲသို့ဝင်ထားရပါမည်။ ၁၄ ရက်ပြည့်ပြီးသူများအတွက် ခဏချင်း ရရှိပါမည်။ (Group ၂ ခုလုံးဝင်ထားရန် လိုအပ်သည်)",
+                'expl-gamepass': "<strong>Gamepass:</strong> Gamepass ပြုလုပ်ထားရန်လိုပါသည်။ Robux ရောက်ရန် ၅ ရက်မှ ၇ ရက်အထိ စောင့်ရပါမည်။"
             },
             en: {
-                't-premium': "Professional Robux",
-                't-official-group': "Official Communities",
-                't-required-join': "Crucial Requirement",
-                't-must-join-msg': "You MUST join BOTH groups below. Orders without both group memberships will be CANCELLED and NO REFUNDS will be issued.",
-                't-pay-details': "Secure Payments",
-                't-order-now': "Order Terminal",
-                't-m-group': "Group Join",
-                't-m-pass': "Gamepass",
-                't-l-user': "Roblox Identifier",
-                't-l-amt': "Robux Volume",
-                't-total-price': "Calculated Settlement",
-                't-l-pay': "Payment Protocol",
-                't-l-slip': "Evidence Submission",
-                't-upload': "Upload Slip",
-                't-submit': "Initialize Order Transfer",
-                'm-success': "Order Logged",
-                'expl-group': "<strong>Group Join:</strong> Instant delivery for eligible members. <em>(Must be in BOTH groups)</em>",
-                'expl-gamepass': "<strong>Gamepass:</strong> Manual payout through assets. Requires 5-7 days pending period.",
-                't-video-1': "Gamepass Tutorial",
-                't-video-1-sub': "Phase 1: Setup",
-                't-video-2': "Finalization",
-                't-video-2-sub': "Phase 2: Completion"
+                '.translate-premium': "Professional Robux Service",
+                '.translate-required-join': "Crucial Requirement",
+                '.translate-must-join-msg': "You MUST join BOTH groups below. Orders without both group memberships will be CANCELLED and NO REFUNDS will be issued.",
+                '.translate-pay-details': "Payment Details",
+                '.translate-order-now': "Order Terminal",
+                '.translate-m-group': "Group Join",
+                '.translate-m-pass': "Gamepass",
+                '.translate-l-user': "Roblox Username",
+                '.translate-l-amt': "Robux Amount",
+                '.translate-l-note': "Order Note (Optional)",
+                '.translate-total-price': "Total Price",
+                '.translate-l-pay': "Payment Method",
+                '.translate-l-slip': "Transfer Slip",
+                '.translate-upload': "Upload Slip",
+                '.translate-submit': "Place Order",
+                'm-success': "Order Received",
+                'expl-group': "<strong>Group Join:</strong> Must be a member of the group. Instant delivery for eligible members. (Must join BOTH)",
+                'expl-gamepass': "<strong>Gamepass:</strong> Setup a gamepass asset. Delivery takes 5-7 pending days."
             }
         };
 
@@ -390,13 +344,16 @@
         function switchLanguage(lang) {
             state.language = lang;
             const t = translations[lang];
-            Object.keys(t).forEach(key => {
-                const els = document.querySelectorAll('.' + key);
-                els.forEach(el => {
-                    if (el.tagName === 'INPUT') el.placeholder = t[key];
-                    else el.innerHTML = t[key];
-                });
-            });
+            
+            // Loop through translation keys
+            for (let selector in t) {
+                if (selector.startsWith('.')) {
+                    const els = document.querySelectorAll(selector);
+                    els.forEach(el => {
+                        el.innerText = t[selector];
+                    });
+                }
+            }
             updateExplanation();
         }
 
@@ -406,13 +363,14 @@
             
             const btnGroup = document.getElementById('m-group');
             const btnPass = document.getElementById('m-gamepass');
-            const activeClass = "bg-orange-500 text-white";
-            const inactiveClass = "text-gray-500 hover:text-white";
 
-            btnGroup.className = `px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${method === 'group' ? activeClass : inactiveClass}`;
-            btnPass.className = `px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${method === 'gamepass' ? activeClass : inactiveClass}`;
-            
-            document.getElementById('tutorialSection').classList.toggle('hidden', method !== 'gamepass');
+            if (method === 'group') {
+                btnGroup.className = "px-6 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all bg-orange-500 text-white translate-m-group";
+                btnPass.className = "px-6 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all text-gray-500 hover:text-white translate-m-pass";
+            } else {
+                btnGroup.className = "px-6 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all text-gray-500 hover:text-white translate-m-group";
+                btnPass.className = "px-6 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all bg-orange-500 text-white translate-m-pass";
+            }
             
             updateExplanation();
             calculateTotal();
@@ -436,7 +394,6 @@
                 reader.onload = (ev) => {
                     document.getElementById('previewImg').src = ev.target.result;
                     document.getElementById('previewBox').classList.remove('hidden');
-                    document.querySelector('.t-upload').innerText = state.language === 'my' ? "ပို့ပြီးပါပြီ" : "Attached";
                 };
                 reader.readAsDataURL(file);
             }
@@ -445,7 +402,6 @@
         function resetFile() {
             document.getElementById('file').value = "";
             document.getElementById('previewBox').classList.add('hidden');
-            document.querySelector('.t-upload').innerText = translations[state.language]['t-upload'];
         }
 
         document.getElementById('amount').addEventListener('input', calculateTotal);
@@ -453,27 +409,26 @@
         document.getElementById('orderForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
-            const originalText = btn.innerText;
-            
             btn.disabled = true;
-            btn.innerText = "...";
+            btn.innerText = "Processing...";
 
             const user = document.getElementById('username').value;
             const amt = document.getElementById('amount').value;
+            const note = document.getElementById('note').value || "No note provided.";
             const pay = document.getElementById('payment').value;
             const file = document.getElementById('file').files[0];
 
             const embed = {
-                title: "💎 NEW ORDER PROTOCOL",
+                title: "🛒 NEW ROBOUX ORDER",
                 color: 16738816,
                 fields: [
-                    { name: "Target ID", value: `\`${user}\``, inline: true },
-                    { name: "Robux Volume", value: `**${amt}**`, inline: true },
-                    { name: "Total MMK", value: `**${(amt * state.rate).toLocaleString()}**`, inline: true },
-                    { name: "Protocol", value: state.method.toUpperCase(), inline: true },
-                    { name: "Channel", value: pay, inline: true }
+                    { name: "Username", value: user, inline: true },
+                    { name: "Amount", value: amt + " Robux", inline: true },
+                    { name: "Method", value: state.method.toUpperCase(), inline: true },
+                    { name: "Price", value: (amt * state.rate).toLocaleString() + " MMK", inline: true },
+                    { name: "Payment", value: pay, inline: true },
+                    { name: "Order Note", value: note }
                 ],
-                footer: { text: "Encryption: AES-256 | HolaShop Terminal" },
                 timestamp: new Date().toISOString()
             };
 
@@ -486,25 +441,23 @@
                 if (response.ok) {
                     showModal(
                         translations[state.language]['m-success'],
-                        "Your transaction is being verified. Please ensure you remain in BOTH groups to avoid cancellation.",
-                        "✅"
+                        "Your order has been submitted. Check your Roblox account after confirmation."
                     );
                     e.target.reset();
                     resetFile();
                     calculateTotal();
                 } else throw new Error();
             } catch (err) {
-                showModal("Network Error", "Unable to establish connection to secure server.", "❌");
+                showModal("Error", "Something went wrong. Please try again.");
             } finally {
                 btn.disabled = false;
-                btn.innerText = originalText;
+                btn.innerText = translations[state.language]['.translate-submit'];
             }
         });
 
-        function showModal(title, desc, icon) {
+        function showModal(title, desc) {
             document.getElementById('m-title').innerText = title;
             document.getElementById('m-desc').innerText = desc;
-            document.getElementById('m-icon').innerText = icon;
             document.getElementById('modal').classList.replace('hidden', 'flex');
         }
 

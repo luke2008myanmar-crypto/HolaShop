@@ -3,26 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HolaShop | Premium Robux Provider</title>
+    <title>HolaShop | Premium Robux</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pyidaungsu:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Pyidaungsu:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --accent: #ff6b00;
-            --accent-hover: #e65a00;
-            --bg-dark: #0a0a0a;
-            --surface: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
+            --bg-dark: #050505;
         }
 
         body {
             font-family: 'Inter', 'Pyidaungsu', sans-serif;
             background-color: var(--bg-dark);
-            color: #f5f5f5;
-            -webkit-font-smoothing: antialiased;
+            color: #eee;
             overflow-x: hidden;
+        }
+
+        .glass {
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Scalable Preview Styles */
+        .preview-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            touch-action: none;
+        }
+
+        #largePreviewImg {
+            max-width: 90%;
+            max-height: 80%;
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 8px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .zoom-controls {
+            position: absolute;
+            bottom: 40px;
+            display: flex;
+            gap: 15px;
+            background: rgba(255,255,255,0.1);
+            padding: 12px 24px;
+            border-radius: 99px;
+            backdrop-filter: blur(10px);
         }
 
         .welcome-screen {
@@ -34,476 +68,356 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: transform 0.8s cubic-bezier(0.87, 0, 0.13, 1), opacity 0.5s ease;
+            transition: transform 0.8s cubic-bezier(0.8, 0, 0.2, 1);
         }
 
-        .welcome-screen.hidden-screen {
+        .welcome-screen.hidden {
             transform: translateY(-100%);
-            opacity: 0;
             pointer-events: none;
         }
 
-        .glass {
-            background: rgba(18, 18, 18, 0.75);
-            backdrop-filter: blur(24px);
-            border: 1px solid var(--border);
+        .feature-bar {
+            display: grid;
+            grid-template-cols: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 24px;
         }
 
-        .hero-gradient {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: 
-                radial-gradient(circle at 0% 0%, rgba(255, 107, 0, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 100% 100%, rgba(255, 107, 0, 0.05) 0%, transparent 40%),
-                #0a0a0a;
+        .feature-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
 
-        .form-input {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border);
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .form-input:focus {
-            border-color: var(--accent);
-            background: rgba(255, 107, 0, 0.04);
-            box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.15);
-            outline: none;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            transition: all 0.2s;
-            font-weight: 700;
-        }
-
-        .btn-primary:hover {
-            background: var(--accent-hover);
-            transform: translateY(-1px);
-        }
-
-        .sidebar-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border);
-            border-radius: 1.5rem;
-        }
-
-        .pay-card {
-            transition: background-color 0.2s ease;
-        }
-        .pay-card:hover {
-            background-color: rgba(255, 255, 255, 0.08);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade { animation: fadeIn 0.5s ease-out forwards; }
-
-        .warning-glow {
-            border-left: 4px solid #ef4444;
-            background: rgba(239, 68, 68, 0.03);
-        }
-
-        /* Feature Bar Styles */
-        .feature-icon {
-            width: 48px;
-            height: 48px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 50%;
+        .feature-icon-box {
+            width: 44px;
+            height: 44px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 8px;
-            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 6px;
         }
 
-        /* Fullscreen Preview */
-        .preview-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.95);
-            z-index: 10000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            cursor: zoom-out;
+        .feature-text {
+            font-size: 8px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #666;
         }
-        .preview-content {
-            max-width: 90%;
-            max-height: 90%;
-            transition: transform 0.3s ease;
-            cursor: default;
+
+        .input-field {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+
+        .input-field:focus {
+            border-color: var(--accent);
+            background: rgba(255,107,0,0.05);
+            outline: none;
         }
     </style>
 </head>
-<body class="min-h-screen selection:bg-orange-500/30">
+<body>
 
-    <!-- Image Preview Overlay -->
-    <div id="imagePreviewOverlay" class="preview-overlay" onclick="closeImagePreview()">
-        <img id="largePreviewImg" src="" class="preview-content shadow-2xl rounded-lg" onclick="event.stopPropagation()">
-        <div class="absolute top-6 right-6 flex gap-4">
-            <button onclick="zoomImage(1.2)" class="p-3 bg-white/10 rounded-full hover:bg-white/20 transition-colors">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-            </button>
-            <button onclick="zoomImage(0.8)" class="p-3 bg-white/10 rounded-full hover:bg-white/20 transition-colors">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7"/></svg>
-            </button>
-            <button onclick="closeImagePreview()" class="p-3 bg-red-500 rounded-full hover:bg-red-600 transition-colors">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+    <!-- Image Scaler / Preview -->
+    <div id="previewOverlay" class="preview-overlay" onclick="closePreview()">
+        <div class="absolute top-8 right-8">
+            <button class="text-white hover:text-red-500 transition-colors">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
-    </div>
-
-    <!-- Loading/Welcome Screen -->
-    <div id="welcomeScreen" class="welcome-screen">
-        <div class="text-center space-y-8 px-6">
-            <div class="w-24 h-24 mx-auto rounded-[2rem] overflow-hidden border-2 border-orange-500 shadow-2xl bg-zinc-900">
-                <!-- Restored Logo with Fallback -->
-                <img src="https://i.ibb.co/hR8h4fPz/Logo.jpg" onerror="this.src='https://i.ibb.co/C3mH0m6/Logo.jpg'" alt="Logo" class="w-full h-full object-cover">
-            </div>
-            <div class="space-y-3">
-                <h1 class="text-4xl font-black tracking-tighter text-white italic uppercase">HOLA<span class="text-orange-500">SHOP</span></h1>
-                <p class="text-gray-400 font-bold tracking-[0.4em] uppercase text-[10px]">The Premium Experience</p>
-            </div>
-            <button onclick="enterShop()" class="btn-primary px-12 py-4 rounded-2xl text-xs font-black uppercase tracking-[0.2em] flex items-center gap-3 mx-auto">
-                Launch App
+        
+        <img id="largePreviewImg" src="" onclick="event.stopPropagation()">
+        
+        <div class="zoom-controls" onclick="event.stopPropagation()">
+            <button onclick="changeZoom(-0.2)" class="p-2 hover:text-orange-500 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/></svg>
+            </button>
+            <span id="zoomLevel" class="min-w-[50px] text-center font-bold">100%</span>
+            <button onclick="changeZoom(0.2)" class="p-2 hover:text-orange-500 transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
             </button>
         </div>
+        <p class="mt-4 text-gray-500 text-xs font-bold uppercase tracking-widest">Drag or use buttons to scale</p>
     </div>
 
-    <div class="hero-gradient"></div>
+    <!-- Welcome Screen -->
+    <div id="welcome" class="welcome-screen">
+        <div class="w-24 h-24 mb-6 rounded-3xl overflow-hidden border-2 border-orange-500 shadow-[0_0_30px_rgba(255,107,0,0.3)] bg-zinc-900">
+            <img src="https://cdn.discordapp.com/attachments/1183103131749138432/1345653556552405023/Logo.jpg" alt="HolaShop Logo" class="w-full h-full object-cover">
+        </div>
+        <h1 class="text-4xl font-black italic uppercase tracking-tighter mb-2">HOLA<span class="text-orange-500">SHOP</span></h1>
+        <p class="text-[10px] font-bold text-gray-500 tracking-[0.4em] uppercase mb-10">Premium Robux Experience</p>
+        <button onclick="startApp()" class="px-10 py-4 bg-orange-500 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all">
+            Enter Dashboard
+        </button>
+    </div>
 
-    <!-- Nav -->
-    <nav class="max-w-7xl mx-auto px-6 py-8 flex justify-between items-center relative z-50">
-        <div class="flex items-center gap-4">
-            <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/10 bg-zinc-900">
-                <img src="https://i.ibb.co/hR8h4fPz/Logo.jpg" onerror="this.src='https://i.ibb.co/C3mH0m6/Logo.jpg'" class="w-full h-full object-cover">
+    <!-- Navigation -->
+    <nav class="max-w-6xl mx-auto p-6 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl overflow-hidden border border-white/10">
+                <img src="https://cdn.discordapp.com/attachments/1183103131749138432/1345653556552405023/Logo.jpg" class="w-full h-full object-cover">
             </div>
             <div>
-                <span class="text-lg font-black tracking-tight italic uppercase">HOLA<span class="text-orange-500">SHOP</span></span>
-                <p class="text-[9px] text-gray-500 font-bold uppercase tracking-widest translate-premium">Professional Robux</p>
+                <div class="text-lg font-black italic tracking-tighter uppercase">HOLA<span class="text-orange-500">SHOP</span></div>
+                <div class="text-[8px] text-gray-500 font-bold uppercase tracking-widest">Official Store</div>
             </div>
         </div>
         
-        <select id="langSwitcher" onchange="switchLanguage(this.value)" class="glass border border-white/10 rounded-xl px-4 py-2 text-[10px] font-bold uppercase tracking-widest focus:outline-none cursor-pointer">
+        <select id="lang" onchange="updateLang(this.value)" class="glass px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest outline-none cursor-pointer">
             <option value="my">🇲🇲 Myanmar</option>
             <option value="en">🇺🇸 English</option>
         </select>
     </nav>
 
-    <main class="max-w-7xl mx-auto px-6 pb-20 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        <!-- Sidebar -->
-        <aside class="lg:col-span-4 space-y-6">
-            <!-- Feature Bar (restored from screenshot) -->
-            <section class="grid grid-cols-4 gap-2 mb-6">
-                <div class="flex flex-col items-center">
-                    <div class="feature-icon">
-                        <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                    </div>
-                    <span class="text-[8px] font-black text-gray-500 uppercase tracking-tighter">Secured</span>
+    <main class="max-w-6xl mx-auto px-6 py-4 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Left Sidebar -->
+        <div class="lg:col-span-4 space-y-6">
+            <!-- Features (Restored from Screenshot) -->
+            <div class="feature-bar">
+                <div class="feature-item">
+                    <div class="feature-icon-box"><svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><path d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001z"/></svg></div>
+                    <span class="feature-text">Secured</span>
                 </div>
-                <div class="flex flex-col items-center">
-                    <div class="feature-icon">
-                        <svg class="w-5 h-5 text-orange-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"></path></svg>
-                    </div>
-                    <span class="text-[8px] font-black text-gray-500 uppercase tracking-tighter">Instant</span>
+                <div class="feature-item">
+                    <div class="feature-icon-box"><svg class="w-5 h-5 text-orange-500" fill="currentColor" viewBox="0 0 20 20"><path d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"/></svg></div>
+                    <span class="feature-text">Instant</span>
                 </div>
-                <div class="flex flex-col items-center">
-                    <div class="feature-icon">
-                        <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.53 4.75A.75.75 0 015.28 4h9.44a.75.75 0 01.75.75l.71 4.505a.75.75 0 01-.106.511l-5.61 8.823a.75.75 0 01-1.272 0l-5.61-8.823a.75.75 0 01-.106-.511l.71-4.505zM5.993 5.5l-.552 3.5h2.156l.803-3.5H5.993zm3.931 0l-.803 3.5h1.758l-.803-3.5H9.924zm2.477 0l.803 3.5h2.156l-.552-3.5h-2.407zM7.273 10.5h-2.1l4.031 6.34L7.273 10.5zm3.523 6.34L14.827 10.5h-2.1l-1.931 6.34zm-1.841-6.34l1.045 3.433 1.045-3.433H8.955z" clip-rule="evenodd"></path></svg>
-                    </div>
-                    <span class="text-[8px] font-black text-gray-500 uppercase tracking-tighter">Official</span>
+                <div class="feature-item">
+                    <div class="feature-icon-box"><svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20"><path d="M4.53 4.75A.75.75 0 015.28 4h9.44a.75.75 0 01.75.75l.71 4.505a.75.75 0 01-.106.511l-5.61 8.823a.75.75 0 01-1.272 0l-5.61-8.823a.75.75 0 01-.106-.511l.71-4.505z"/></svg></div>
+                    <span class="feature-text">Official</span>
                 </div>
-                <div class="flex flex-col items-center">
-                    <div class="feature-icon">
-                        <svg class="w-5 h-5 text-purple-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"></path></svg>
-                    </div>
-                    <span class="text-[8px] font-black text-gray-500 uppercase tracking-tighter">Support</span>
+                <div class="feature-item">
+                    <div class="feature-icon-box"><svg class="w-5 h-5 text-purple-400" fill="currentColor" viewBox="0 0 20 20"><path d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7z"/></svg></div>
+                    <span class="feature-text">Support</span>
                 </div>
-            </section>
+            </div>
 
-            <section class="sidebar-card p-6 glass warning-glow">
-                <div class="flex items-center gap-2 mb-3">
-                    <div class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></div>
-                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-red-400 translate-required-join">Crucial Requirement</h3>
+            <!-- Danger Alert -->
+            <div class="glass p-6 rounded-3xl border-l-4 border-red-500">
+                <h3 class="text-[10px] font-black text-red-500 uppercase tracking-widest mb-2 tr-req">Requirement</h3>
+                <p class="text-xs text-gray-400 leading-relaxed tr-warn">You MUST join both groups. Failure to join results in order cancellation with NO REFUND.</p>
+                <div class="mt-4 space-y-2">
+                    <a href="https://www.roblox.com/communities/787559488" target="_blank" class="block p-3 bg-white/5 rounded-xl text-[10px] font-bold border border-white/5 hover:border-white/20 transition-all">Golden Myanmar</a>
+                    <a href="https://www.roblox.com/communities/1031541384" target="_blank" class="block p-3 bg-white/5 rounded-xl text-[10px] font-bold border border-white/5 hover:border-white/20 transition-all">Ti Htwin Community</a>
                 </div>
-                <p class="text-xs font-medium text-gray-300 leading-relaxed mb-6 translate-must-join-msg">
-                    You MUST join BOTH groups below. Orders without both group memberships will be CANCELLED and NO REFUNDS will be issued.
-                </p>
-                <div class="space-y-2">
-                    <a href="https://www.roblox.com/communities/787559488" target="_blank" class="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/5 hover:border-orange-500/40 transition-all group">
-                        <span class="text-xs font-bold">Golden Myanmar</span>
-                        <svg class="w-3 h-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                    </a>
-                    <a href="https://www.roblox.com/communities/1031541384" target="_blank" class="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/5 hover:border-orange-500/40 transition-all group">
-                        <span class="text-xs font-bold">Ti Htwin Community</span>
-                        <svg class="w-3 h-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                    </a>
-                </div>
-            </section>
+            </div>
 
-            <section class="sidebar-card p-6 glass">
-                <div class="flex items-center gap-2 mb-5">
-                    <div class="w-1 h-3 bg-orange-500 rounded-full"></div>
-                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 translate-pay-details">Payment Details</h3>
-                </div>
+            <!-- Payment Info -->
+            <div class="glass p-6 rounded-3xl">
+                <h3 class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4 tr-pay">Payment Details</h3>
                 <div class="space-y-3">
-                    <div class="pay-card p-4 bg-white/5 border border-white/5 rounded-xl cursor-default">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-[9px] font-black text-blue-400 tracking-widest">KBZ PAY</span>
-                            <span class="text-[9px] text-gray-500 font-bold uppercase">Ei Ei Theint</span>
-                        </div>
-                        <p class="text-base font-mono font-bold text-white">09956799403</p>
+                    <div class="p-4 bg-blue-500/5 border border-blue-500/10 rounded-2xl">
+                        <div class="text-[8px] font-black text-blue-400 uppercase mb-1">KBZ PAY</div>
+                        <div class="text-lg font-mono font-bold">09956799403</div>
+                        <div class="text-[9px] text-gray-500">Ei Ei Theint</div>
                     </div>
-                    <div class="pay-card p-4 bg-white/5 border border-white/5 rounded-xl cursor-default">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-[9px] font-black text-yellow-500 tracking-widest">WAVE PAY</span>
-                            <span class="text-[9px] text-gray-500 font-bold uppercase">Ei Ei Theint</span>
-                        </div>
-                        <p class="text-base font-mono font-bold text-white">09956799403</p>
+                    <div class="p-4 bg-yellow-500/5 border border-yellow-500/10 rounded-2xl">
+                        <div class="text-[8px] font-black text-yellow-500 uppercase mb-1">WAVE PAY</div>
+                        <div class="text-lg font-mono font-bold">09956799403</div>
+                        <div class="text-[9px] text-gray-500">Ei Ei Theint</div>
                     </div>
                 </div>
-            </section>
-        </aside>
+            </div>
+        </div>
 
-        <!-- Form Area -->
+        <!-- Order Form -->
         <div class="lg:col-span-8">
-            <div class="glass rounded-[2rem] p-8 md:p-12 shadow-2xl animate-fade">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 pb-8 border-b border-white/5">
-                    <div>
-                        <h2 class="text-2xl font-black tracking-tighter translate-order-now italic">Order Terminal</h2>
+            <div class="glass p-8 md:p-10 rounded-[2.5rem] shadow-2xl">
+                <div class="flex flex-col md:flex-row justify-between gap-6 mb-10 pb-8 border-b border-white/5">
+                    <h2 class="text-2xl font-black italic tr-terminal">Order Terminal</h2>
+                    <div class="flex p-1.5 bg-white/5 rounded-2xl border border-white/10">
+                        <button onclick="setMethod('group', 35)" id="m-group" class="px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest bg-orange-500 text-white transition-all">Group</button>
+                        <button onclick="setMethod('gamepass', 32)" id="m-pass" class="px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition-all">Gamepass</button>
                     </div>
-                    <div class="inline-flex p-1 bg-white/5 rounded-xl border border-white/10">
-                        <button onclick="setMethod('group', 35)" id="m-group" class="px-6 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all bg-orange-500 text-white translate-m-group">Group Join</button>
-                        <button onclick="setMethod('gamepass', 32)" id="m-gamepass" class="px-6 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all text-gray-500 hover:text-white translate-m-pass">Gamepass</button>
-                    </div>
-                </div>
-
-                <div id="methodInfo" class="mb-10 p-5 bg-orange-500/5 border border-orange-500/10 rounded-2xl">
-                    <p id="methodExplanation" class="text-xs leading-relaxed text-gray-300 font-medium"></p>
                 </div>
 
                 <form id="orderForm" class="space-y-8">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest translate-l-user">Roblox Username</label>
-                            <input type="text" id="username" required placeholder="Target Name" class="form-input w-full px-5 py-4 rounded-xl font-bold text-sm">
+                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest tr-l-user">Roblox Username</label>
+                            <input type="text" id="username" required placeholder="Display Name" class="input-field w-full px-5 py-4 rounded-xl text-sm font-bold">
                         </div>
                         <div class="space-y-2">
-                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest translate-l-amt">Robux Amount</label>
-                            <input type="number" id="amount" required placeholder="Min 100" class="form-input w-full px-5 py-4 rounded-xl font-bold text-sm">
+                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest tr-l-amt">Robux Amount</label>
+                            <input type="number" id="amount" required placeholder="Min 100" class="input-field w-full px-5 py-4 rounded-xl text-sm font-bold">
                         </div>
                     </div>
 
                     <div class="space-y-2">
-                        <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest translate-l-note">Order Note (Optional)</label>
-                        <textarea id="note" rows="2" placeholder="Any special requests or details..." class="form-input w-full px-5 py-4 rounded-xl font-bold text-sm resize-none"></textarea>
+                        <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest tr-l-note">Order Note</label>
+                        <textarea id="note" rows="2" placeholder="Optional notes..." class="input-field w-full px-5 py-4 rounded-xl text-sm font-bold resize-none"></textarea>
                     </div>
 
-                    <div class="p-8 bg-white/5 rounded-2xl border border-white/5 text-center">
-                        <span class="text-[9px] font-black text-gray-500 uppercase tracking-[0.2em] translate-total-price">Calculated Settlement</span>
-                        <div class="mt-2 flex items-baseline justify-center gap-2">
-                            <span id="totalDisplay" class="text-4xl font-black text-white italic">0</span>
-                            <span class="text-[10px] font-black text-orange-500">MMK</span>
+                    <div class="p-8 bg-orange-500/[0.03] border border-orange-500/10 rounded-3xl text-center">
+                        <span class="text-[10px] font-black text-gray-500 uppercase tracking-widest tr-total">Calculated Price</span>
+                        <div class="flex items-baseline justify-center gap-2 mt-2">
+                            <span id="totalDisplay" class="text-5xl font-black italic">0</span>
+                            <span class="text-sm font-black text-orange-500">MMK</span>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest translate-l-pay">Payment Method</label>
-                            <select id="payment" class="form-input w-full px-5 py-4 rounded-xl font-bold text-sm cursor-pointer appearance-none bg-zinc-900">
-                                <option value="KPay">KBZ Pay (Transfer)</option>
-                                <option value="WavePay">Wave Pay (Transfer)</option>
+                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest tr-l-pay">Payment Method</label>
+                            <select id="payment" class="input-field w-full px-5 py-4 rounded-xl text-sm font-bold cursor-pointer appearance-none bg-zinc-900">
+                                <option value="KPay">KBZ Pay (Direct)</option>
+                                <option value="WavePay">Wave Pay (Direct)</option>
                             </select>
                         </div>
                         <div class="space-y-2">
-                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest translate-l-slip">Transfer Slip</label>
+                            <label class="text-[9px] font-black text-gray-500 uppercase tracking-widest tr-l-slip">Transfer Slip</label>
                             <div class="relative">
                                 <input type="file" id="file" accept="image/*" required class="absolute inset-0 opacity-0 cursor-pointer z-10" onchange="handleFile(event)">
-                                <div id="fileBtn" class="form-input w-full px-5 py-4 rounded-xl text-[10px] font-black text-gray-500 uppercase tracking-widest flex items-center justify-center gap-2">
-                                    <span class="translate-upload">Upload Slip</span>
+                                <div class="input-field w-full px-5 py-4 rounded-xl text-[10px] font-black text-gray-500 uppercase tracking-widest flex items-center justify-center gap-2">
+                                    <span class="tr-upload">Select Image</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div id="previewBox" class="hidden animate-fade">
-                        <div class="relative group cursor-pointer w-full max-w-xs mx-auto" onclick="openImagePreview()">
-                            <div class="aspect-video rounded-2xl overflow-hidden border border-white/10 relative">
-                                <img id="previewImg" src="" class="w-full h-full object-cover">
-                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                                    <span class="text-[10px] font-black uppercase tracking-widest text-white">Click to Zoom</span>
+                    <!-- Small Preview with Scale Trigger -->
+                    <div id="previewContainer" class="hidden animate-fade">
+                        <div class="relative group cursor-pointer w-48 mx-auto" onclick="openPreview()">
+                            <div class="aspect-square rounded-2xl overflow-hidden border-2 border-white/10 group-hover:border-orange-500 transition-all">
+                                <img id="thumbPreview" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center transition-all">
+                                    <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+                                    <span class="text-[8px] font-black uppercase">Inspect</span>
                                 </div>
                             </div>
-                            <button type="button" onclick="event.stopPropagation(); resetFile()" class="absolute -top-2 -right-2 p-1.5 bg-red-500 rounded-lg text-white shadow-lg">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                            <button type="button" onclick="event.stopPropagation(); resetFile()" class="absolute -top-2 -right-2 p-1 bg-red-500 rounded-lg shadow-xl">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
                             </button>
                         </div>
                     </div>
 
-                    <button type="submit" id="submitBtn" class="btn-primary w-full py-5 rounded-xl text-[10px] uppercase tracking-[0.3em] translate-submit">
-                        Initialize Order
+                    <button type="submit" id="submitBtn" class="w-full py-5 bg-orange-500 rounded-2xl text-[11px] font-black uppercase tracking-[0.4em] hover:shadow-[0_0_40px_rgba(255,107,0,0.2)] transition-all tr-submit">
+                        Submit Order
                     </button>
                 </form>
             </div>
         </div>
     </main>
 
-    <!-- Simple Modal -->
-    <div id="modal" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-[1000] p-6 backdrop-blur-sm">
-        <div class="glass p-8 rounded-3xl max-w-sm w-full text-center">
-            <h3 id="m-title" class="text-xl font-black mb-2 italic">Success</h3>
-            <p id="m-desc" class="text-xs text-gray-400 mb-8"></p>
-            <button onclick="closeModal()" class="w-full py-4 bg-orange-500 text-white font-black rounded-xl text-[10px] uppercase tracking-widest">OK</button>
-        </div>
-    </div>
-
     <script>
-        const WEBHOOK_URL = "https://discord.com/api/webhooks/1345648820961148299/ffE72t90-0vTFwIKMoRQw7qSC7QaK6UFMdirBiVZytKj3GVUKIr1K3lsJxsPrxWR8DBP";
+        const WH_URL = "https://discord.com/api/webhooks/1345648820961148299/ffE72t90-0vTFwIKMoRQw7qSC7QaK6UFMdirBiVZytKj3GVUKIr1K3lsJxsPrxWR8DBP";
         
-        const state = {
+        let state = {
             rate: 35,
             method: 'group',
-            language: 'my',
-            currentZoom: 1
+            zoom: 1
         };
 
-        const translations = {
+        const trans = {
             my: {
-                '.translate-premium': "Professional Robux ဝန်ဆောင်မှု",
-                '.translate-required-join': "အထူးသတိပေးချက်",
-                '.translate-must-join-msg': "အောက်ပါ Group (၂) ခုလုံးကို မဖြစ်မနေ Join ထားရပါမည်။ Join မထားပါက Order ကို Cancel လုပ်မည်ဖြစ်ပြီး ငွေပြန်အမ်းပေးမည် မဟုတ်ပါ။",
-                '.translate-pay-details': "ငွေပေးချေရန်",
-                '.translate-order-now': "Order တင်ရန်",
-                '.translate-m-group': "Group Join",
-                '.translate-m-pass': "Gamepass",
-                '.translate-l-user': "Roblox အမည်",
-                '.translate-l-amt': "Robux ပမာဏ",
-                '.translate-l-note': "မှတ်ချက် (Optional)",
-                '.translate-total-price': "ကျသင့်ငွေ",
-                '.translate-l-pay': "ငွေပေးချေမှုပုံစံ",
-                '.translate-l-slip': "ငွေလွှဲလက်မှတ်",
-                '.translate-upload': "ဓာတ်ပုံတင်ရန်",
-                '.translate-submit': "မှာယူမှုကို အတည်ပြုမည်",
-                'm-success': "Order လက်ခံရရှိပါသည်",
-                'expl-group': "<strong>Group Join:</strong> Group ထဲသို့ဝင်ထားရပါမည်။ ၁၄ ရက်ပြည့်ပြီးသူများအတွက် ခဏချင်း ရရှိပါမည်။ (Group ၂ ခုလုံးဝင်ထားရန် လိုအပ်သည်)",
-                'expl-gamepass': "<strong>Gamepass:</strong> Gamepass ပြုလုပ်ထားရန်လိုပါသည်။ Robux ရောက်ရန် ၅ ရက်မှ ၇ ရက်အထိ စောင့်ရပါမည်။"
+                '.tr-req': "အထူးသတိပေးချက်",
+                '.tr-warn': "အောက်ပါ Group (၂) ခုလုံးကို မဖြစ်မနေ Join ထားရပါမည်။ Join မထားပါက Order ကို Cancel လုပ်မည်ဖြစ်ပြီး ငွေပြန်အမ်းပေးမည် မဟုတ်ပါ။",
+                '.tr-pay': "ငွေပေးချေရန်",
+                '.tr-terminal': "မှာယူရန်",
+                '.tr-l-user': "Roblox အမည်",
+                '.tr-l-amt': "Robux ပမာဏ",
+                '.tr-l-note': "မှတ်ချက် (Optional)",
+                '.tr-total': "ကျသင့်ငွေ",
+                '.tr-l-pay': "ငွေပေးချေမှုပုံစံ",
+                '.tr-l-slip': "ငွေလွှဲလက်မှတ်",
+                '.tr-upload': "ဓာတ်ပုံတင်ရန်",
+                '.tr-submit': "မှာယူမှုကို အတည်ပြုမည်"
             },
             en: {
-                '.translate-premium': "Professional Robux Service",
-                '.translate-required-join': "Crucial Requirement",
-                '.translate-must-join-msg': "You MUST join BOTH groups below. Orders without both group memberships will be CANCELLED and NO REFUNDS will be issued.",
-                '.translate-pay-details': "Payment Details",
-                '.translate-order-now': "Order Terminal",
-                '.translate-m-group': "Group Join",
-                '.translate-m-pass': "Gamepass",
-                '.translate-l-user': "Roblox Username",
-                '.translate-l-amt': "Robux Amount",
-                '.translate-l-note': "Order Note (Optional)",
-                '.translate-total-price': "Total Price",
-                '.translate-l-pay': "Payment Method",
-                '.translate-l-slip': "Transfer Slip",
-                '.translate-upload': "Upload Slip",
-                '.translate-submit': "Place Order",
-                'm-success': "Order Received",
-                'expl-group': "<strong>Group Join:</strong> Must be a member of the group. Instant delivery for eligible members. (Must join BOTH)",
-                'expl-gamepass': "<strong>Gamepass:</strong> Setup a gamepass asset. Delivery takes 5-7 pending days."
+                '.tr-req': "Requirement",
+                '.tr-warn': "You MUST join both groups. Failure to join results in order cancellation with NO REFUND.",
+                '.tr-pay': "Payment Details",
+                '.tr-terminal': "Order Terminal",
+                '.tr-l-user': "Roblox Username",
+                '.tr-l-amt': "Robux Amount",
+                '.tr-l-note': "Order Note",
+                '.tr-total': "Total Price",
+                '.tr-l-pay': "Payment Method",
+                '.tr-l-slip': "Transfer Slip",
+                '.tr-upload': "Select Image",
+                '.tr-submit': "Submit Order"
             }
         };
 
-        function enterShop() {
-            document.getElementById('welcomeScreen').classList.add('hidden-screen');
-            document.body.style.overflow = 'auto';
+        function startApp() {
+            document.getElementById('welcome').classList.add('hidden');
         }
 
-        function switchLanguage(lang) {
-            state.language = lang;
-            const t = translations[lang];
-            for (let selector in t) {
-                if (selector.startsWith('.')) {
-                    const els = document.querySelectorAll(selector);
-                    els.forEach(el => { el.innerText = t[selector]; });
-                }
+        function updateLang(l) {
+            const t = trans[l];
+            for(let key in t) {
+                document.querySelectorAll(key).forEach(el => el.innerText = t[key]);
             }
-            updateExplanation();
         }
 
-        function setMethod(method, rate) {
-            state.method = method;
-            state.rate = rate;
-            const btnGroup = document.getElementById('m-group');
-            const btnPass = document.getElementById('m-gamepass');
-            if (method === 'group') {
-                btnGroup.className = "px-6 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all bg-orange-500 text-white translate-m-group";
-                btnPass.className = "px-6 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all text-gray-500 hover:text-white translate-m-pass";
-            } else {
-                btnGroup.className = "px-6 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all text-gray-500 hover:text-white translate-m-group";
-                btnPass.className = "px-6 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all bg-orange-500 text-white translate-m-pass";
-            }
-            updateExplanation();
-            calculateTotal();
+        function setMethod(m, r) {
+            state.method = m;
+            state.rate = r;
+            const bg = "px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest bg-orange-500 text-white transition-all";
+            const nobg = "px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-white transition-all";
+            
+            document.getElementById('m-group').className = m === 'group' ? bg : nobg;
+            document.getElementById('m-pass').className = m === 'gamepass' ? bg : nobg;
+            calc();
         }
 
-        function updateExplanation() {
-            const key = state.method === 'group' ? 'expl-group' : 'expl-gamepass';
-            document.getElementById('methodExplanation').innerHTML = translations[state.language][key];
+        function calc() {
+            const val = parseInt(document.getElementById('amount').value) || 0;
+            document.getElementById('totalDisplay').innerText = (val * state.rate).toLocaleString();
         }
 
-        function calculateTotal() {
-            const amt = parseInt(document.getElementById('amount').value) || 0;
-            const total = amt * state.rate;
-            document.getElementById('totalDisplay').innerText = total.toLocaleString();
-        }
+        document.getElementById('amount').addEventListener('input', calc);
 
+        // Preview Logic
         function handleFile(e) {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = (ev) => {
-                    const url = ev.target.result;
-                    document.getElementById('previewImg').src = url;
-                    document.getElementById('largePreviewImg').src = url;
-                    document.getElementById('previewBox').classList.remove('hidden');
+                    document.getElementById('thumbPreview').src = ev.target.result;
+                    document.getElementById('largePreviewImg').src = ev.target.result;
+                    document.getElementById('previewContainer').classList.remove('hidden');
                 };
                 reader.readAsDataURL(file);
             }
         }
 
-        function resetFile() {
-            document.getElementById('file').value = "";
-            document.getElementById('previewBox').classList.add('hidden');
-        }
-
-        // Scaling / Zoom Preview Logic
-        function openImagePreview() {
-            state.currentZoom = 1;
-            document.getElementById('largePreviewImg').style.transform = `scale(${state.currentZoom})`;
-            document.getElementById('imagePreviewOverlay').style.display = 'flex';
+        function openPreview() {
+            state.zoom = 1;
+            updateZoom();
+            document.getElementById('previewOverlay').style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
 
-        function closeImagePreview() {
-            document.getElementById('imagePreviewOverlay').style.display = 'none';
+        function closePreview() {
+            document.getElementById('previewOverlay').style.display = 'none';
             document.body.style.overflow = 'auto';
         }
 
-        function zoomImage(factor) {
-            state.currentZoom *= factor;
-            // Cap zoom levels
-            if (state.currentZoom < 0.5) state.currentZoom = 0.5;
-            if (state.currentZoom > 3) state.currentZoom = 3;
-            document.getElementById('largePreviewImg').style.transform = `scale(${state.currentZoom})`;
+        function changeZoom(delta) {
+            state.zoom = Math.max(0.5, Math.min(3, state.zoom + delta));
+            updateZoom();
         }
 
-        document.getElementById('amount').addEventListener('input', calculateTotal);
+        function updateZoom() {
+            document.getElementById('largePreviewImg').style.transform = `scale(${state.zoom})`;
+            document.getElementById('zoomLevel').innerText = Math.round(state.zoom * 100) + '%';
+        }
 
-        document.getElementById('orderForm').addEventListener('submit', async (e) => {
+        function resetFile() {
+            document.getElementById('file').value = "";
+            document.getElementById('previewContainer').classList.add('hidden');
+        }
+
+        document.getElementById('orderForm').onsubmit = async (e) => {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
             btn.disabled = true;
@@ -511,58 +425,44 @@
 
             const user = document.getElementById('username').value;
             const amt = document.getElementById('amount').value;
-            const note = document.getElementById('note').value || "No note provided.";
+            const note = document.getElementById('note').value || "None";
             const pay = document.getElementById('payment').value;
             const file = document.getElementById('file').files[0];
 
             const embed = {
-                title: "🛒 NEW ROBOUX ORDER",
+                title: "💎 NEW ROBUX ORDER",
                 color: 16738816,
                 fields: [
-                    { name: "Username", value: user, inline: true },
-                    { name: "Amount", value: amt + " Robux", inline: true },
-                    { name: "Method", value: state.method.toUpperCase(), inline: true },
-                    { name: "Price", value: (amt * state.rate).toLocaleString() + " MMK", inline: true },
-                    { name: "Payment", value: pay, inline: true },
-                    { name: "Order Note", value: note }
-                ],
-                timestamp: new Date().toISOString()
+                    { name: "User", value: user, inline: true },
+                    { name: "Robux", value: amt, inline: true },
+                    { name: "Type", value: state.method.toUpperCase(), inline: true },
+                    { name: "Total", value: (amt * state.rate).toLocaleString() + " MMK", inline: true },
+                    { name: "Bank", value: pay, inline: true },
+                    { name: "Note", value: note }
+                ]
             };
 
-            const formData = new FormData();
-            formData.append('payload_json', JSON.stringify({ embeds: [embed] }));
-            if (file) formData.append('file', file);
+            const fd = new FormData();
+            fd.append('payload_json', JSON.stringify({ embeds: [embed] }));
+            if (file) fd.append('file', file);
 
             try {
-                const response = await fetch(WEBHOOK_URL, { method: 'POST', body: formData });
-                if (response.ok) {
-                    showModal(translations[state.language]['m-success'], "Your order has been submitted. Check your Roblox account after confirmation.");
+                const res = await fetch(WH_URL, { method: 'POST', body: fd });
+                if (res.ok) {
+                    alert("Order Submitted Successfully!");
                     e.target.reset();
                     resetFile();
-                    calculateTotal();
-                } else throw new Error();
+                    calc();
+                } else throw Error();
             } catch (err) {
-                showModal("Error", "Something went wrong. Please try again.");
+                alert("Submission failed. Please check connection.");
             } finally {
                 btn.disabled = false;
-                btn.innerText = translations[state.language]['.translate-submit'];
+                btn.innerText = "Submit Order";
             }
-        });
-
-        function showModal(title, desc) {
-            document.getElementById('m-title').innerText = title;
-            document.getElementById('m-desc').innerText = desc;
-            document.getElementById('modal').classList.replace('hidden', 'flex');
-        }
-
-        function closeModal() {
-            document.getElementById('modal').classList.replace('flex', 'hidden');
-        }
-
-        window.onload = () => {
-            switchLanguage('my');
-            document.body.style.overflow = 'hidden';
         };
+
+        updateLang('my');
     </script>
 </body>
 </html>

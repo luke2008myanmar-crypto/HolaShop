@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HolaShop - Premium Robux Store</title>
+    <!-- Favicon / Website Icon -->
+    <link rel="icon" type="image/jpeg" href="Logo.jpg">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Pyidaungsu:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -125,10 +127,13 @@
             <!-- Sidebar -->
             <div class="lg:col-span-4 space-y-8">
                 <div class="glass-panel p-8 rounded-[2.5rem] relative overflow-hidden">
-                    <h3 class="text-[10px] font-black text-orange-500 uppercase tracking-[0.3em] mb-4 t-official-group">တရားဝင် Group</h3>
+                    <h3 class="text-[10px] font-black text-orange-500 uppercase tracking-[0.3em] mb-4 t-official-group">တရားဝင် Group များ</h3>
                     <h2 class="text-2xl font-black mb-3 leading-tight t-join-title">Community သို့ဝင်ရန်</h2>
                     <p class="text-gray-400 text-xs leading-relaxed mb-6 t-join-desc">Group Join စနစ်ဖြင့် ဝယ်ယူရန် ၁၄ ရက်ပြည့်ရပါမည်။</p>
-                    <a href="https://www.roblox.com/communities/787559488/Golden-Myanmar#!/about" target="_blank" class="block w-full py-4 text-center bg-white/5 border border-white/10 rounded-2xl text-[10px] font-black tracking-widest hover:bg-orange-600 hover:text-white transition-all uppercase t-join-btn">Group သို့သွားရန်</a>
+                    <div class="space-y-3">
+                        <a href="https://www.roblox.com/communities/787559488/Golden-Myanmar#!/about" target="_blank" class="block w-full py-4 text-center bg-white/5 border border-white/10 rounded-2xl text-[10px] font-black tracking-widest hover:bg-orange-600 hover:text-white transition-all uppercase">Group 1 သို့သွားရန်</a>
+                        <a href="https://www.roblox.com/communities/1031541384/Ti-Htwin#!/about" target="_blank" class="block w-full py-4 text-center bg-white/5 border border-white/10 rounded-2xl text-[10px] font-black tracking-widest hover:bg-orange-600 hover:text-white transition-all uppercase">Group 2 သို့သွားရန်</a>
+                    </div>
                 </div>
 
                 <div class="glass-panel p-8 rounded-[2.5rem]">
@@ -136,11 +141,13 @@
                     <div class="space-y-4">
                         <div class="p-4 bg-white/5 rounded-2xl border border-white/5">
                             <span class="block text-[9px] font-black text-blue-400 uppercase mb-1">KBZ Pay (KPay)</span>
-                            <p class="text-sm font-bold tracking-wider">09956799403</p>
+                            <p class="text-sm font-bold tracking-wider mb-1">09956799403</p>
+                            <p class="text-[10px] text-gray-500 font-bold uppercase">Ei Ei Theint</p>
                         </div>
                         <div class="p-4 bg-white/5 rounded-2xl border border-white/5">
-                            <span class="block text-[9px] font-black text-yellow-500 uppercase mb-1">Wave Money</span>
-                            <p class="text-sm font-bold tracking-wider">09956799403</p>
+                            <span class="block text-[9px] font-black text-yellow-500 uppercase mb-1">Wave Pay</span>
+                            <p class="text-sm font-bold tracking-wider mb-1">09956799403</p>
+                            <p class="text-[10px] text-gray-500 font-bold uppercase">Ei Ei Theint</p>
                         </div>
                     </div>
                 </div>
@@ -176,7 +183,7 @@
                                     <p class="text-[9px] text-gray-400 t-video-1-sub">အဆင့် ၁ - ပြုလုပ်ပုံ</p>
                                 </div>
                             </a>
-                            <a href="https://youtube.com/shorts/monL5fkneR8?si=XJKfCK3Qmun2O22F" target="_blank" class="flex items-center gap-4 p-4 bg-red-600/10 border border-red-500/20 rounded-2xl hover:bg-red-600/20 transition-all group">
+                            <a href="https://youtube.com/shorts/monL5fkneR8?si=XJKfJK3Qmun2O22F" target="_blank" class="flex items-center gap-4 p-4 bg-red-600/10 border border-red-500/20 rounded-2xl hover:bg-red-600/20 transition-all group">
                                 <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center text-white">
                                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                                 </div>
@@ -192,7 +199,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div class="space-y-3">
                                 <label class="text-[9px] font-black text-gray-500 uppercase tracking-[0.3em] ml-2 t-l-user">Roblox အမည်</label>
-                                <input type="text" id="username" required placeholder="User123" class="input-field w-full px-7 py-5 rounded-3xl font-bold text-lg">
+                                <input type="text" id="username" required placeholder="Your Username" class="input-field w-full px-7 py-5 rounded-3xl font-bold text-lg">
                             </div>
                             <div class="space-y-3">
                                 <label class="text-[9px] font-black text-gray-500 uppercase tracking-[0.3em] ml-2 t-l-amt">Robux ပမာဏ</label>
@@ -213,7 +220,7 @@
                                 <label class="text-[9px] font-black text-gray-500 uppercase tracking-[0.3em] ml-2 t-l-pay">ငွေပေးချေမှုပုံစံ</label>
                                 <select id="payment" class="input-field w-full px-7 py-5 rounded-3xl font-bold text-white outline-none appearance-none cursor-pointer">
                                     <option value="KPay" class="bg-zinc-900">KBZ Pay</option>
-                                    <option value="WavePay" class="bg-zinc-900">Wave Money</option>
+                                    <option value="WavePay" class="bg-zinc-900">Wave Pay</option>
                                 </select>
                             </div>
                             <div class="space-y-3">
@@ -260,7 +267,7 @@
                 't-welcome-sub': "မြန်မာနိုင်ငံ၏ အကောင်းဆုံး Robux အရောင်းဆိုင်",
                 't-enter': "ဆိုင်ထဲသို့ဝင်ရန်",
                 't-premium': "Premium ဝန်ဆောင်မှု",
-                't-official-group': "တရားဝင် Group",
+                't-official-group': "တရားဝင် Group များ",
                 't-join-title': "Community သို့ဝင်ရန်",
                 't-join-desc': "Group Join စနစ်ဖြင့် ဝယ်ယူရန် ၁၄ ရက်ပြည့်ရပါမည်။",
                 't-join-btn': "Group သို့သွားရန်",
@@ -287,7 +294,7 @@
                 't-welcome-sub': "Myanmar's Premium Robux Hub",
                 't-enter': "Enter Store",
                 't-premium': "Premium Hub",
-                't-official-group': "Official Group",
+                't-official-group': "Official Groups",
                 't-join-title': "Join Community",
                 't-join-desc': "Verified deliveries via payouts. 14 days group age required.",
                 't-join-btn': "Visit Group",
@@ -332,6 +339,14 @@
             });
             document.documentElement.lang = lang;
             updateExplanation();
+            
+            // Update Username Placeholder on lang change if it matches default
+            const userInp = document.getElementById('username');
+            if (lang === 'en') {
+                userInp.placeholder = "Your Username";
+            } else {
+                userInp.placeholder = "Your Username"; // Keeps the requested English placeholder even in MM
+            }
         }
 
         function enterShop() {
@@ -433,7 +448,6 @@
             document.getElementById('modal').classList.replace('flex', 'hidden');
         }
 
-        // Default setup: Myanmar language and UI refresh
         window.onload = () => {
             switchLanguage('my'); 
             updateExplanation();
